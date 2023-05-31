@@ -4,3 +4,6 @@ from django.http import HttpResponse, JsonResponse
 
 def index(request):
     return render(request, 'index.html')
+
+def index(request):
+    return render(request, 'proveedor.html')

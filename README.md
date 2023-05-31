@@ -8,5 +8,6 @@
 * Crear BD POSTGRESQL en la maquina Local nombre = PapeleriaRosita
 * Carga de las tablas: 'python manage.py migrate'
 
-- Para finalizar se corre el proyecto: 'python manage.py runserver'
- 
+* [Ejecutar Proyecto]
+* Correr entorno virtual'.\venv\Scripts\activate'
+* Para finalizar se corre el proyecto: 'python manage.py runserver'
