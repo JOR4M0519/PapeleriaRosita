@@ -1,0 +1,29 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  {% load bootstrap5 %}
+  {% bootstrap_css %}
+  {% bootstrap_javascript %}
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'styles/login.css' %}">
+  <title>Inicia sesión</title>
+
+</head>
+<body id="Cuerpo">
+    <div id="principal" class="rounded position-absolute top-50 start-50 translate-middle border border-3" >
+      <form method="post">
+        {% csrf_token %}
+        {{form}}
+        <button>
+            Enviar
+        </button>
+    </form>
+    <button type="button" class="btn btn-secondary">Secondary</button>
+    </div>
+</body>
+</html>
