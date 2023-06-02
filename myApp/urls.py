@@ -2,7 +2,7 @@ from rest_framework import routers
 from django.urls import path
 from . import views
 
-router = routers.DeultRouter()
+router = routers.DefaultRouter()
 
 urlpatterns = [
     path('', views.index),
