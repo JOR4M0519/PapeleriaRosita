@@ -142,7 +142,7 @@ class DetallesVenta(models.Model):
     id_detventa = models.AutoField(primary_key=True)
     id_producto = models.ForeignKey('Producto', models.DO_NOTHING, db_column='id_producto')
     cantidad = models.IntegerField()
-    fecha = models.DateField()
+    fecha = models.DateField(auto_now_add=True)
 
     class Meta:
         managed = True
