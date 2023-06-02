@@ -10,10 +10,9 @@ router.register('api/proveedores',ProveedorViewSet,'proveedores')
 router.register('api/detallesCompra',DetallesVentaViewSet,'detallesCompra')
 router.register('api/detallesVenta',DetallesCompraViewSet,'detallesVenta')
 
-urlpatterns = router.urls,[
+urlpatterns = [
     # path('', views.index),
-
     path('producto/', views.ProductoView.as_view()),
     path('producto/<int:id>', views.ProductoView.as_view())
-    
 ]
+urlpatterns += router.urls
