@@ -1,6 +1,6 @@
 from .models import Usuario,Proveedor,Producto,DetallesVenta,DetallesCompra
 from rest_framework import viewsets, permissions
-from .serializers import UsuarioSerializer,ProductoSerializer
+from .serializers import UsuarioSerializer,ProductoSerializer,ProveedorSerailizer
 
 class ProductoViewSet(viewsets.ModelViewSet):
     queryset = Producto.objects.all()
@@ -15,7 +15,7 @@ class UsuarioViewSet(viewsets.ModelViewSet):
 class ProveedorViewSet(viewsets.ModelViewSet):
     queryset = Proveedor.objects.all()
     permission_classes = [permissions.AllowAny]
-    serializer_class = Proveedor
+    serializer_class = ProveedorSerailizer
 
 class DetallesVentaViewSet(viewsets.ModelViewSet):
     queryset = DetallesVenta.objects.all()

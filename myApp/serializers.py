@@ -20,7 +20,7 @@ class ProveedorSerailizer(serializers.ModelSerializer):
 class ProductoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Producto
-        fields = ('nombre_producto', 'valor_compra', 'valor_venta','valor_ganancia', 'stock', 'estado') 
+        fields = ('__all__')
         read_only_fields = ('created_at',)
 
 class DetallesVentaSerializer(serializers.ModelSerializer):
