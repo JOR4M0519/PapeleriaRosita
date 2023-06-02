@@ -11,3 +11,18 @@ class UsuarioViewSet(viewsets.ModelViewSet):
     queryset = Usuario.objects.all()
     permission_classes = [permissions.AllowAny]
     serializer_class = UsuarioSerializer
+
+class ProveedorViewSet(viewsets.ModelViewSet):
+    queryset = Proveedor.objects.all()
+    permission_classes = [permissions.AllowAny]
+    serializer_class = Proveedor
+
+class DetallesVentaViewSet(viewsets.ModelViewSet):
+    queryset = DetallesVenta.objects.all()
+    permission_classes = [permissions.AllowAny]
+    serializer_class = DetallesVenta
+
+class DetallesCompraViewSet(viewsets.ModelViewSet):
+    queryset = DetallesCompra.objects.all()
+    permission_classes = [permissions.AllowAny]
+    serializer_class = DetallesCompra
