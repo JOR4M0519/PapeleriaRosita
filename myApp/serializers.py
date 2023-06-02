@@ -20,7 +20,7 @@ class DetallesVentaSerializer(serializers.ModelSerializer):
     class Meta:
         model = DetallesVenta
         fields = ('id_producto', 'cantidad', 'fecha')
-        read_only_fields = ('fecha')
+        read_only_fields = ('fecha',)
 
 class DetallesCompraSerializer(serializers.ModelSerializer):
     class Meta:
