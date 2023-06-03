@@ -15,13 +15,13 @@ def index(request):
 def about(request):
     title = 'Titular Acerca de'
     variable = 'USUARIOS:'
-    #users = AuthUser.objects.all()
-    users = {nombre:'hernan',edad:5}
+    #users = .objects.all()
+    #users = {nombre:'hernan',edad:5}
 
     return render(request, 'about.html', {
         'title' : title,
         'variable': variable,
-        'users': users
+        'users': "ala"
     })
 
 def create_product(request):
