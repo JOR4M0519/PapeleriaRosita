@@ -12,25 +12,28 @@ from .forms import login, signup
 lista=[]
 empleados=[]
 
-def index(request):
-    return render(request, 'index.html',{
-        'listaUsuario': lista
-    })
+# def index(request):
+#     return render(request, 'index.html',{
+#         'listaUsuario': lista
+#     })
 
-
-def sign_up(request):
-    return render(request, 'signup.html')
+# def sign_up(request):
+#     return render(request, 'signup.html')
 
 def log_in(request):
+    print('hello')
     if request.method == 'GET':
+      print('hello?1')
       return render(request, 'login.html',{
         'form': login()
       })
     else:
+        
         lista.append({
            'nombreUsuario': request.POST['username'],
             'contrasena': request.POST['password'] })
-        return redirect('index')
+        print(lista)
+        return redirect('login') #redirect('index')
 
 def sign_up(request):
     if request.method == 'GET':
@@ -42,14 +45,6 @@ def sign_up(request):
            'nombreEmpleado': request.POST['nombreEmpleado'],
             'edad': request.POST['edad'] })
         return redirect('index')
-
-# Create your views here.
-
-# def index(request):
-#     return render(request, 'index.html')
-#
-# def index(request):
-#     return render(request, 'proveedor.html')
 
 class ProductoView(View):
 
