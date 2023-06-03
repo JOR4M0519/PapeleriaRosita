@@ -13,6 +13,26 @@
 
  */
 /*     brand Colors              */
+.sidebar .log_img_rosita{
+  width: 13%;
+  margin-right: 1.5%;
+}
+
+#form_login_inicio{
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  width: 100%;
+  margin-left: 300px;
+}
+
+#form_login_texto{
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
 .card {
   font-size: .875rem; }
 
@@ -34,7 +54,7 @@ article, aside, dialog, figcaption, figure, footer, header, hgroup, main, nav, s
 
 body {
   margin: 0;
-  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-family: "Poppins", Arial, sans-serif;
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
@@ -342,7 +362,7 @@ article, aside, dialog, figcaption, figure, footer, header, hgroup, main, nav, s
 
 body {
   margin: 0;
-  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-family: "Poppins", Arial, sans-serif;
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
@@ -4041,7 +4061,7 @@ button.close {
   z-index: 1070;
   display: block;
   margin: 0;
-  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-family: "Poppins", Arial, sans-serif;
   font-style: normal;
   font-weight: 400;
   line-height: 1.5;
@@ -4126,7 +4146,7 @@ button.close {
   z-index: 1060;
   display: block;
   max-width: 276px;
-  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-family: "Poppins", Arial, sans-serif;
   font-style: normal;
   font-weight: 400;
   line-height: 1.5;
@@ -9563,7 +9583,7 @@ html * {
   -moz-osx-font-smoothing: grayscale; }
 
 body, h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4 {
-  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-family: "Poppins", Arial, sans-serif;
   font-weight: 300;
   line-height: 1.5em; }
 

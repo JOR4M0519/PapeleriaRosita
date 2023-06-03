@@ -7,7 +7,7 @@
 
 {% block content %}
 
-  <div class="row">
+  <div id="form_login_inicio">
     <div class="col-md-5">
       <div class="card">
         <div class="card-header card-header-primary">
@@ -31,7 +31,7 @@
               
             {% csrf_token %} 
 
-            <div class="row">
+            <div id="form_login_texto">
               <div class="col-md-12">
                 <div class="form-group">
                   <label class="bmd-label-floating">Username</label>
