@@ -128,8 +128,8 @@ from django.db import models
 
 class DetallesCompra(models.Model):
     id_detcompra = models.AutoField(primary_key=True)
-    id_producto = models.ForeignKey('Producto', models.DO_NOTHING, db_column='id_producto')
-    id_proveedor = models.ForeignKey('Proveedor', models.DO_NOTHING, db_column='id_proveedor')
+    id_producto = models.ForeignKey('Producto', models.DO_NOTHING, db_column='id_producto',default=0)
+    id_proveedor = models.ForeignKey('Proveedor', models.DO_NOTHING, db_column='id_proveedor',default=0)
     cantidad = models.IntegerField()
     fecha = models.DateField()
 
@@ -140,9 +140,9 @@ class DetallesCompra(models.Model):
 
 class DetallesVenta(models.Model):
     id_detventa = models.AutoField(primary_key=True)
-    id_producto = models.ForeignKey('Producto', models.DO_NOTHING, db_column='id_producto')
+    id_producto = models.ForeignKey('Producto', models.DO_NOTHING, db_column='id_producto',default=0)
     cantidad = models.IntegerField()
-    fecha = models.DateField()
+    fecha = models.DateField(auto_now_add=True)
 
     class Meta:
         managed = True
