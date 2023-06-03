@@ -6,7 +6,7 @@ from django.http import HttpResponse, JsonResponse
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
-from .models import Producto, Proveedor, DetallesVenta
+from .models import Producto, Proveedor, DetallesVenta, DetallesCompra, Usuario
 from .forms import login, signup
 
 lista=[]
@@ -52,10 +52,10 @@ class ProductoView(View):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
-    def get(self,request,id=0):
-        if(id>0):
+    def get(self, request, id=0):
+        if (id > 0):
             products = list(Producto.objects.filter(id_producto=id).values())
-            if len(products)>0:
+            if len(products) > 0:
                 datos = {'message': "Success", 'product': products[0]}
             else:
                 datos = {'message': "Producto no Encontrado"}
@@ -82,14 +82,14 @@ class ProductoView(View):
     def put(self, request, id):
         jd = json.loads(request.body)
         products = list(Producto.objects.filter(id_producto=id).values())
-        if len(products)>0:
+        if len(products) > 0:
             product = Producto.objects.get(id_producto=id)
-            product.nombre_producto=jd['nombre_producto']
-            product.valor_compra=jd['valor_compra']
-            product.valor_venta=jd['valor_venta']
-            product.valor_ganancia=jd['valor_ganancia']
-            product.stock=jd['stock']
-            product.estado=jd['estado']
+            product.nombre_producto = jd['nombre_producto']
+            product.valor_compra = jd['valor_compra']
+            product.valor_venta = jd['valor_venta']
+            product.valor_ganancia = jd['valor_ganancia']
+            product.stock = jd['stock']
+            product.estado = jd['estado']
             product.save()
             datos = {'message': "Success"}
         else:
@@ -105,16 +105,17 @@ class ProductoView(View):
             datos = {'message': "Producto no Encontrado"}
         return JsonResponse(datos)
 
+
 class ProveedorView(View):
 
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
-    def get(self,request,id=0):
-        if(id>0):
+    def get(self, request, id=0):
+        if (id > 0):
             provider = list(Proveedor.objects.filter(id_proveedor=id).values())
-            if len(provider)>0:
+            if len(provider) > 0:
                 datos = {'message': "Success", 'provider': provider[0]}
             else:
                 datos = {'message': "Proveedor no Encontrado"}
@@ -130,21 +131,21 @@ class ProveedorView(View):
     def post(self, request):
         jd = json.loads(request.body)
         Proveedor.objects.create(razon_social=jd['razon_social'],
-                                email_proveedor=jd['email_proveedor'],
-                                telefono=jd['telefono'],
-                                estado=jd['estado'])
+                                 email_proveedor=jd['email_proveedor'],
+                                 telefono=jd['telefono'],
+                                 estado=jd['estado'])
         datos = {'message': "Success"}
         return JsonResponse(datos)
 
     def put(self, request, id):
         jd = json.loads(request.body)
         providers = list(Proveedor.objects.filter(id_proveedor=id).values())
-        if len(providers)>0:
+        if len(providers) > 0:
             provider = Proveedor.objects.get(id_proveedor=id)
-            provider.razon_social=jd['razon_social']
-            provider.email_proveedor=jd['email_proveedor']
-            provider.telefono=jd['telefono']
-            provider.estado=jd['estado']
+            provider.razon_social = jd['razon_social']
+            provider.email_proveedor = jd['email_proveedor']
+            provider.telefono = jd['telefono']
+            provider.estado = jd['estado']
             provider.save()
             datos = {'message': "Success"}
         else:
@@ -160,14 +161,133 @@ class ProveedorView(View):
             datos = {'message': "Proveedor no Encontrado"}
         return JsonResponse(datos)
 
+
+class UsuarioView(View):
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, id=0):
+        if (id > 0):
+            user = list(Usuario.objects.filter(id_usuario=id).values())
+            if len(user) > 0:
+                datos = {'message': "Success", 'user': user[0]}
+            else:
+                datos = {'message': "Usuario no Encontrado"}
+        else:
+            user = list(DetallesVenta.objects.values())
+            if len(user) > 0:
+                datos = {'message': "Success", 'users': user}
+            else:
+                datos = {'message': "No existen Usuarios"}
+
+        return JsonResponse(datos)
+
+    def post(self, request):
+        jd = json.loads(request.body)
+        Usuario.objects.create(username=jd['username'],
+                               nombre=jd['nombre'],
+                               telefono=jd['telefono'],
+                               num_identificacion=jd['num_identificacion'],
+                               clave=jd['clave'],
+                               rol=jd['rol'],
+                               estado=jd['estado'])
+        datos = {'message': "Success"}
+        return JsonResponse(datos)
+
+    def put(self, request, id):
+        jd = json.loads(request.body)
+        details = list(Usuario.objects.filter(id_usuario=id).values())
+        if len(details) > 0:
+            detail = Usuario.objects.get(id_usuario=id)
+            detail.username = jd['username']
+            detail.nombre = jd['nombre']
+            detail.telefono = jd['telefono']
+            detail.num_identificacion = jd['num_identificacion']
+            detail.clave = jd['clave']
+            detail.rol = jd['rol']
+            detail.estado = jd['estado']
+            detail.save()
+            datos = {'message': "Success"}
+        else:
+            datos = {'message': "Detalle no Encontrado"}
+        return JsonResponse(datos)
+
+    def delete(self, request, id):
+        details = list(DetallesVenta.objects.filter(id_usuario=id).values())
+        if len(details) > 0:
+            Usuario.objects.filter(id_usuario=id).delete()
+            datos = {'message': "Success"}
+        else:
+            datos = {'message': "Usuario no Encontrado"}
+        return JsonResponse(datos)
+
+
+class DetalleCompraView(View):
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, id=0):
+        if (id > 0):
+            details = list(DetallesCompra.objects.filter(id_detcompra=id).values())
+            if len(details) > 0:
+                datos = {'message': "Success", 'details': details[0]}
+            else:
+                datos = {'message': "Detalle no Encontrado"}
+        else:
+            details = list(DetallesCompra.objects.values())
+            if len(details) > 0:
+                datos = {'message': "Success", 'details': details}
+            else:
+                datos = {'message': "No existen Detalles"}
+
+        return JsonResponse(datos)
+
+    def post(self, request):
+        jd = json.loads(request.body)
+        DetallesCompra.objects.create(id_producto_id=jd['id_producto'],
+                                      id_proveedor_id=jd['id_proveedor'],
+                                      cantidad=jd['cantidad'],
+                                      fecha=jd['fecha'])
+        datos = {'message': "Success"}
+        return JsonResponse(datos)
+
+    def put(self, request, id):
+        jd = json.loads(request.body)
+        details = list(DetallesCompra.objects.filter(id_detcompra=id).values())
+        if len(details) > 0:
+            detail = DetallesCompra.objects.get(id_detcompra=id)
+            detail.id_producto = jd['id_producto']
+            detail.id_proveedor = jd['id_proveedor']
+            detail.cantidad = jd['cantidad']
+            detail.fecha = jd['fecha']
+            detail.save()
+            datos = {'message': "Success"}
+        else:
+            datos = {'message': "Detalle no Encontrado"}
+        return JsonResponse(datos)
+
+    def delete(self, request, id):
+        details = list(DetallesVenta.objects.filter(id_detcompra=id).values())
+        if len(details) > 0:
+            DetallesCompra.objects.filter(id_detcompra=id).delete()
+            datos = {'message': "Success"}
+        else:
+            datos = {'message': "Detalle no Encontrado"}
+        return JsonResponse(datos)
+
+
 class DetalleVentaView(View):
 
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
-    def get(self,request,id=0):
-        if(id>0):
+    def get(self, request, id=0):
+        if (id > 0):
             details = list(DetallesVenta.objects.filter(id_detventa=id).values())
             if len(details) > 0:
                 datos = {'message': "Success", 'details': details[0]}
@@ -176,7 +296,7 @@ class DetalleVentaView(View):
         else:
             details = list(DetallesVenta.objects.values())
             if len(details) > 0:
-                datos = {'message': "Success", 'provider': details}
+                datos = {'message': "Success", 'details': details}
             else:
                 datos = {'message': "No existen Detalles"}
 
@@ -184,20 +304,20 @@ class DetalleVentaView(View):
 
     def post(self, request):
         jd = json.loads(request.body)
-        DetallesVenta.objects.create(id_producto=jd['id_producto'],
-                                cantidad=jd['cantidad'],
-                                fecha=jd['fecha'])
+        DetallesVenta.objects.create(id_producto_id=jd['id_producto'],
+                                     cantidad=jd['cantidad'],
+                                     fecha=jd['fecha'])
         datos = {'message': "Success"}
         return JsonResponse(datos)
 
     def put(self, request, id):
         jd = json.loads(request.body)
         details = list(DetallesVenta.objects.filter(id_detventa=id).values())
-        if len(details)>0:
-            detail = DetallesVenta.objects.get(id_detventa=id)
-            detail.id_producto=jd['id_producto']
-            detail.cantidad=jd['cantidad']
-            detail.fecha=jd['fecha']
+        if len(details) > 0:
+            detail = DetallesCompra.objects.get(id_detventa=id)
+            detail.id_producto = jd['id_producto']
+            detail.cantidad = jd['cantidad']
+            detail.fecha = jd['fecha']
             detail.save()
             datos = {'message': "Success"}
         else:
@@ -207,9 +327,189 @@ class DetalleVentaView(View):
     def delete(self, request, id):
         details = list(DetallesVenta.objects.filter(id_detventa=id).values())
         if len(details) > 0:
-            Proveedor.objects.filter(id_detventa=id).delete()
+            DetallesVenta.objects.filter(id_detventa=id).delete()
             datos = {'message': "Success"}
         else:
-            datos = {'message': "Proveedor no Encontrado"}
+            datos = {'message': "Detalle no Encontrado"}
         return JsonResponse(datos)
 
+
+class ReporteVentaView(View):
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request):
+        jd = json.loads(request.body)
+        if jd['id_producto'] == 0 and jd['fechaI'] == "0" and jd['fechaF'] == "0":
+            details = list(DetallesVenta.objects.values())
+            if len(details) > 0:
+                datos = {'message': "Success", 'details': details}
+            else:
+                datos = {'message': "No existen Detalles"}
+        elif jd['fechaI'] == "0000-00-00" and jd['fechaF'] == "0000-00-00":
+            details = list(
+                DetallesVenta.objects.filter(id_producto=jd['id_producto']).values())
+            if len(details) > 0:
+                datos = {'message': "Success", 'details': details}
+            else:
+                datos = {'message': "Detalle no Encontrado"}
+        elif jd['id_producto'] == 0 and jd['fechaF'] == "0":
+            details = list(
+                DetallesVenta.objects.filter(fecha__gte=jd['fechaI']).values())
+            if len(details) > 0:
+                datos = {'message': "Success", 'details': details}
+            else:
+                datos = {'message': "Detalle no Encontrado"}
+        elif jd['id_producto'] == 0 and jd['fechaI'] == "0":
+            details = list(
+                DetallesVenta.objects.filter(fecha__lte=jd['fechaF']).values())
+            if len(details) > 0:
+                datos = {'message': "Success", 'details': details}
+            else:
+                datos = {'message': "Detalle no Encontrado"}
+        elif jd['fechaF'] == "0":
+            details = list(
+                DetallesVenta.objects.filter(id_producto=jd['id_producto'], fecha__gte=jd['fechaI']).values())
+            if len(details) > 0:
+                datos = {'message': "Success", 'details': details}
+            else:
+                datos = {'message': "Detalle no Encontrado"}
+        elif jd['fechaI'] == "0":
+            details = list(
+                DetallesVenta.objects.filter(id_producto=jd['id_producto'], fecha__lte=jd['fechaF']).values())
+            if len(details) > 0:
+                datos = {'message': "Success", 'details': details}
+            else:
+                datos = {'message': "Detalle no Encontrado"}
+        elif jd['id_producto'] == 0:
+            details = list(
+                DetallesVenta.objects.filter(fecha__gte=jd['fechaI'], fecha__lte=jd['fechaF']).values())
+            if len(details) > 0:
+                datos = {'message': "Success", 'details': details}
+            else:
+                datos = {'message': "Detalle no Encontrado"}
+        else:
+            details = list(
+                DetallesVenta.objects.filter(id_producto=jd['id_producto'], fecha__gte=jd['fechaI'], fecha__lte=jd['fechaF']).values())
+            if len(details) > 0:
+                datos = {'message': "Success", 'details': details}
+            else:
+                datos = {'message': "Detalle no Encontrado"}
+
+        return JsonResponse(datos)
+
+class ReporteCompraView(View):
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request):
+        jd = json.loads(request.body)
+        if jd['id_producto'] == 0 and jd['id_proveedor'] == 0 and jd['fechaI'] == "0" and jd['fechaF'] == "0":
+            details = list(DetallesCompra.objects.values())
+            if len(details) > 0:
+                datos = {'message': "Success", 'details': details}
+            else:
+                datos = {'message': "No existen Detalles"}
+        elif jd['id_proveedor'] == 0 and jd['fechaI'] == "0" and jd['fechaF'] == "0":
+            details = list(
+                DetallesCompra.objects.filter(id_producto=jd['id_producto']).values())
+            if len(details) > 0:
+                datos = {'message': "Success", 'details': details}
+            else:
+                datos = {'message': "Detalle no Encontrado"}
+        elif jd['id_producto'] == 0 and jd['fechaI'] == "0" and jd['fechaF'] == "0":
+            details = list(
+                DetallesCompra.objects.filter(id_proveedor=jd['id_proveedor']).values())
+            if len(details) > 0:
+                datos = {'message': "Success", 'details': details}
+            else:
+                datos = {'message': "Detalle no Encontrado"}
+        elif jd['id_producto'] == 0 and jd['id_proveedor'] == 0 and jd['fechaF'] == "0":
+            details = list(
+                DetallesCompra.objects.filter(fecha__gte=jd['fechaI']).values())
+            if len(details) > 0:
+                datos = {'message': "Success", 'details': details}
+            else:
+                datos = {'message': "Detalle no Encontrado"}
+        elif jd['id_producto'] == 0 and jd['id_proveedor'] == 0 and jd['fechaI'] == "0":
+            details = list(
+                DetallesCompra.objects.filter(fecha__lte=jd['fechaF']).values())
+            if len(details) > 0:
+                datos = {'message': "Success", 'details': details}
+            else:
+                datos = {'message': "Detalle no Encontrado"}
+        elif jd['fechaI'] == "0" and jd['fechaF'] == "0":
+            details = list(
+                DetallesCompra.objects.filter(id_producto=jd['id_producto'], id_proveedor=jd['id_proveedor']).values())
+            if len(details) > 0:
+                datos = {'message': "Success", 'details': details}
+            else:
+                datos = {'message': "Detalle no Encontrado"}
+        elif jd['id_proveedor'] == 0 and jd['fechaF'] == "0":
+            details = list(
+                DetallesCompra.objects.filter(id_producto=jd['id_producto'], fecha__gte=jd['fechaI']).values())
+            if len(details) > 0:
+                datos = {'message': "Success", 'details': details}
+            else:
+                datos = {'message': "Detalle no Encontrado"}
+        elif jd['id_proveedor'] == 0 and jd['fechaI'] == "0":
+            details = list(
+                DetallesCompra.objects.filter(id_producto=jd['id_producto'], fecha__lte=jd['fechaF']).values())
+            if len(details) > 0:
+                datos = {'message': "Success", 'details': details}
+            else:
+                datos = {'message': "Detalle no Encontrado"}
+        elif jd['id_producto'] == 0 and jd['fechaF'] == "0":
+            details = list(
+                DetallesCompra.objects.filter(id_proveedor=jd['id_proveedor'], fecha__gte=jd['fechaI']).values())
+            if len(details) > 0:
+                datos = {'message': "Success", 'details': details}
+            else:
+                datos = {'message': "Detalle no Encontrado"}
+        elif jd['id_producto'] == 0 and jd['id_proveedor'] == 0:
+            details = list(
+                DetallesCompra.objects.filter(fecha__gte=jd['fechaI'], fecha__lte=jd['fechaF']).values())
+            if len(details) > 0:
+                datos = {'message': "Success", 'details': details}
+            else:
+                datos = {'message': "Detalle no Encontrado"}
+        elif jd['id_producto'] == 0:
+            details = list(
+                DetallesCompra.objects.filter(id_proveedor=jd['id_proveedor'], fecha__gte=jd['fechaI'], fecha__lte=jd['fechaF']).values())
+            if len(details) > 0:
+                datos = {'message': "Success", 'details': details}
+            else:
+                datos = {'message': "Detalle no Encontrado"}
+        elif jd['id_proveedor'] == 0:
+            details = list(
+                DetallesCompra.objects.filter(id_producto=jd['id_producto'], fecha__gte=jd['fechaI'], fecha__lte=jd['fechaF']).values())
+            if len(details) > 0:
+                datos = {'message': "Success", 'details': details}
+            else:
+                datos = {'message': "Detalle no Encontrado"}
+        elif jd['fechaI'] == "0":
+            details = list(
+                DetallesCompra.objects.filter(id_proveedor=jd['id_proveedor'], id_producto=jd['id_producto'], fecha__lte=jd['fechaF']).values())
+            if len(details) > 0:
+                datos = {'message': "Success", 'details': details}
+            else:
+                datos = {'message': "Detalle no Encontrado"}
+        elif jd['fechaF'] == "0":
+            details = list(
+                DetallesCompra.objects.filter(id_proveedor=jd['id_proveedor'], id_producto=jd['id_producto'], fecha__gte=jd['fechaI']).values())
+            if len(details) > 0:
+                datos = {'message': "Success", 'details': details}
+            else:
+                datos = {'message': "Detalle no Encontrado"}
+        else:
+            details = list(
+                DetallesCompra.objects.filter(id_proveedor=jd['id_proveedor'], id_producto=jd['id_producto'], fecha__gte=jd['fechaI'], fecha__lte=jd['fechaF']).values())
+            if len(details) > 0:
+                datos = {'message': "Success", 'details': details}
+            else:
+                datos = {'message': "Detalle no Encontrado"}
+        return JsonResponse(datos)

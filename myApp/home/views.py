@@ -26,9 +26,16 @@ def pages(request):
 
         if load_template == 'admin':
             return HttpResponseRedirect(reverse('admin:index'))
+        
         context['segment'] = load_template
-
         html_template = loader.get_template('home/' + load_template)
+
+        if load_template == 'page-product.html':
+            print(si)
+            return HttpResponse(html_template.render(context, request,{
+                'encabezado':'Agregar producto'
+            }))
+
         return HttpResponse(html_template.render(context, request))
 
     except template.TemplateDoesNotExist:
