@@ -26,6 +26,10 @@
   margin-left: 300px;
 }
 
+.sidebar .nav .listaSidebar {
+  font-size: 14px;
+}
+
 #form_login_texto{
   display: flex;
   flex-wrap: wrap;

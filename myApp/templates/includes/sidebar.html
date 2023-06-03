@@ -11,62 +11,62 @@
         <ul class="nav">
         {% if request.user.is_authenticated %}
 
-          <li class="nav-item {% if 'index' in segment %} active {% endif %}">
-            <a class="nav-link" href="/">
-              <i class="material-icons">dashboard</i>
-              <p>Dashboard</p>
+          <li class="nav-item {% if 'page-product' in segment %} active {% endif %}">
+
+            <a class="nav-link listaSidebar" type="button" id="dropdownProductos" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="material-icons">color_lens</i>Productos
             </a>
+            <div class="nav-link dropdown-menu" aria-labelledby="dropdownProductos">
+             <a class="nav-link dropdown-item listaSidebar" href="/ui-tables.html">Lista de productos</a>
+             <a class="nav-link dropdown-item listaSidebar" href="/page-product.html">Agregar producto</a>
+            </div>
+            </a>
+
           </li>
           <li class="nav-item {% if 'page-user' in segment %} active {% endif %}">
-            <a class="nav-link" href="/page-user.html">
-              <i class="material-icons">person</i>
-              <p>User Profile</p>
+
+            <a class="nav-link listaSidebar" type="button" id="dropdownProvee" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="material-icons">contact_phone</i>Proveedores
             </a>
+            <div class="nav-link dropdown-menu" aria-labelledby="dropdownProvee">
+             <a class="nav-link dropdown-item listaSidebar" href="/ui-tables.html">Lista de proveedores</a>
+             <a class="nav-link dropdown-item listaSidebar" href="/page-user.html">Agregar proveedores</a>
+            </div>
+            </a>
+
           </li>
           <li class="nav-item {% if 'ui-tables' in segment %} active {% endif %}">
-            <a class="nav-link" href="/ui-tables.html">
-              <i class="material-icons">content_paste</i>
-              <p>Table List</p>
+
+            <a class="nav-link listaSidebar" type="button" id="dropdownCompras" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="material-icons">local_grocery_store</i>Compras
             </a>
+            <div class="nav-link dropdown-menu" aria-labelledby="dropdownCompras">
+             <a class="nav-link dropdown-item listaSidebar" href="/ui-tables.html">Lista de compras</a>
+             <a class="nav-link dropdown-item listaSidebar" href="#">Agregar compras</a>
+            </div>
+            </a>
+
           </li>
           <li class="nav-item {% if 'ui-typography' in segment %} active {% endif %}">
-            <a class="nav-link" href="/ui-typography.html">
-              <i class="material-icons">library_books</i>
-              <p>Typography</p>
+
+            <a class="nav-link listaSidebar" type="button" id="dropdownVentas" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="material-icons">attach_money</i>Ventas
             </a>
-          </li>
-          <li class="nav-item {% if 'ui-icons' in segment %} active {% endif %}">
-            <a class="nav-link" href="/ui-icons.html">
-              <i class="material-icons">bubble_chart</i>
-              <p>Icons</p>
+            <div class="nav-link dropdown-menu" aria-labelledby="dropdownVentas">
+             <a class="nav-link dropdown-item listaSidebar" href="/ui-tables.html">Lista de ventas</a>
+             <a class="nav-link dropdown-item listaSidebar" href="#">Agregar ventas</a>
+            </div>
             </a>
+
           </li>
-          <li class="nav-item {% if 'ui-maps' in segment %} active {% endif %}">
-            <a class="nav-link" href="/ui-maps.html">
-              <i class="material-icons">location_ons</i>
-              <p>Maps</p>
-            </a>
-          </li>
+          
+          <!--   
           <li class="nav-item {% if 'ui-notifications' in segment %} active {% endif %}">
             <a class="nav-link" href="/ui-notifications.html">
               <i class="material-icons">notifications</i>
               <p>Notifications</p>
             </a>
-          </li>
-          
-          <li class="nav-item ">
-            <a class="nav-link" href="/page-rtl-support.html">
-              <i class="material-icons">language</i>
-              <p>RTL Support</p>
-            </a>
-          </li>
-
-          <li class="nav-item ">
-            <a class="nav-link" href="{% url 'logout' %}" >
-              <i class="material-icons">directions_run</i>
-              <p>Logout</p>
-            </a>
-          </li>
+          </li>-->
 
           <li class="nav-item active-pro ">
             <a class="nav-link" 
