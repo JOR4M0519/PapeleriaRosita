@@ -7,6 +7,7 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from .models import Producto, Proveedor, DetallesVenta
+from .forms import CreateProduct
 
 
 # Create your views here.
