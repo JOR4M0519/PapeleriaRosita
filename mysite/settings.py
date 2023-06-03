@@ -19,11 +19,7 @@ BASE_DIR = Path(__file__).parent
 MYSITE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
-<<<<<<< HEAD:mysite/settings.py
 SECRET_KEY = config('SECRET_KEY', default='S#perS3crEt_1122')
-=======
-SECRET_KEY = 'django-insecure-c7e&tb#7sow%d))w+so%-jv37j_q1e3kzd!ndu@+6rtq-yqehz'
->>>>>>> 730b2706430c8bf8e3c7e4b492eefbc9c085172a:PapeleriaRosita/settings.py
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=True, cast=bool)
@@ -40,15 +36,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-<<<<<<< HEAD:mysite/settings.py
-    'myApp', #No se
     'bootstrap5', #No se
-    'myApp.home'
-    #'mytest',
-=======
-    'myApp',
-    'rest_framework'
->>>>>>> 730b2706430c8bf8e3c7e4b492eefbc9c085172a:PapeleriaRosita/settings.py
+    'myApp.home',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -63,14 +53,10 @@ MIDDLEWARE = [
 
 ]
 
-<<<<<<< HEAD:mysite/settings.py
 ROOT_URLCONF = 'mysite.urls'
 LOGIN_REDIRECT_URL = "home"  # Route defined in home/urls.py
 LOGOUT_REDIRECT_URL = "home"  # Route defined in home/urls.py
 TEMPLATE_DIR = os.path.join(MYSITE_DIR, "myApp/templates")  # ROOT dir for templates
-=======
-ROOT_URLCONF = 'PapeleriaRosita.urls'
->>>>>>> 730b2706430c8bf8e3c7e4b492eefbc9c085172a:PapeleriaRosita/settings.py
 
 TEMPLATES = [
     {
@@ -88,7 +74,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'PapeleriaRosita.wsgi.application'
+WSGI_APPLICATION = 'mysite.wsgi.application'
 
 
 # Database
@@ -97,9 +83,9 @@ WSGI_APPLICATION = 'PapeleriaRosita.wsgi.application'
 DATABASES = {
      'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'papeleriarosita',
+        'NAME': 'PapeleriaRosita',
         'USER': 'postgres',
-        'PASSWORD': '29714526?',
+        'PASSWORD': '1234',
         'HOST': 'localhost',
         'DATABASE_PORT': '5432',
     }
