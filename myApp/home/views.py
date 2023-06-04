@@ -115,9 +115,7 @@ def pages(request):
                 #***********
                 #*Productos*
                 #***********
-
             if load_template == 'tables-productos.html':
-
                 #Eliminar
                 if request.POST.get('id_eliminar')!=None:
                     id_eliminar= request.POST.get('id_eliminar')
@@ -126,7 +124,7 @@ def pages(request):
                 elif request.POST.get('id_editar')!=None:
                     
                     id_product= request.POST.get('id_editar')
-                    producto = json.loads(views.ProductoView.get(id=int(id_product)).content)
+                    producto = json.loads(views.ProductoView.get(views,request,id=int(id_product)).content)
                     
                     context['result'] = ''
                     context['encabezado'] = 'Editar producto'
@@ -134,9 +132,12 @@ def pages(request):
                     context['producto'] = producto
                     html_template = loader.get_template('home/page-crte-product.html')
                     return HttpResponse(html_template.render(context,request))
+                #filtro
+                elif request.POST.get('boton_filtro')!=None:
+                    print('Generar reporte seleccionado')
+                    return redirect(load_template)
 
             if load_template == 'page-crte-product.html':
-                
                 #Redirección para editar
                 if request.POST.get('page_product_edit_button')!=None:
                     
@@ -148,10 +149,6 @@ def pages(request):
                     
                     message = json.loads(views.ProductoView.put(producto,id_producto).content)           
                     return HttpResponse(html_template.render(context, request))
-                #filtro
-                elif request.POST.get('boton_filtro')!=None:
-                    print('Generar reporte seleccionado')
-                    return redirect(load_template)
                 #Crear Producto
                 else:
                     producto={'nombre_producto': request.POST['nombre_producto'],
@@ -164,7 +161,6 @@ def pages(request):
                     message = json.loads(views.ProductoView.post(producto).content)
                     context['result'] = message['message']
                     context['encabezado'] = 'Agregar producto'
-                    
                     return HttpResponse(html_template.render(context, request))
                 
                 #*************
