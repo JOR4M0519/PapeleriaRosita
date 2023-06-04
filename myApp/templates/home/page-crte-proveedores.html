@@ -1,0 +1,67 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Page User {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+  let alerta = "{{message}}"
+  if(alerta = "Success"){
+    console.log(alerta)
+    swal("Éxitoso", "El proveedor se ha creado", "success");
+    
+    "{% with message='null' %} {% endwith %}"
+  }
+</script>
+<!-- value={{respuesta.proveedor.0.razon_social}}  -->
+          <div class="row">
+            <div class="col-md-8">
+              <div class="card">
+                <div class="card-header card-header-primary">
+                  <h4 class="card-title">{{encabezado}}</h4>
+                  <p class="card-category">Completa el formulario para crear un proveedor</p>
+                </div>
+                <div class="card-body">
+                  <form method="POST">
+                    {% csrf_token %}
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">Razon Social</label>
+                          <input type="text" name="razon_social" class="form-control">
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">Email</label>
+                          <input type="text" name="email_proveedor" class="form-control">
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">Teléfono</label>
+                          <input type="text" name="telefono" class="form-control">
+                        </div>
+                      </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary pull-right">Crear Proveedor</button>
+                    <div class="clearfix"></div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <!-- include profile.hmtl -->
+          </div>
+
+          {% with message="null" %} 
+          {% endwith %}
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

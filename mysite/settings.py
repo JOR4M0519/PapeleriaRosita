@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bootstrap5', #No se
-    'myApp.home',
+    'myApp',
     'rest_framework',
     'bootstrap_daterangepicker',
 ]
