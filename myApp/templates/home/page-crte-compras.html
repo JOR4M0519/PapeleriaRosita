@@ -7,12 +7,13 @@
 
 {% block content %}
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-<script>  
-  let alerta = "{{result}}"
-  if(alerta == "Success"){
-    swal("Éxitoso", "El producto se ha creado", "success");
-  }else if (alerta == "Error"){
-    swal("Error", "Error guardando datos", "error");
+<script>
+  let alerta = "{{message}}"
+  if(alerta = "Success"){
+    console.log(alerta)
+    swal("Éxitoso", "El proveedor se ha creado", "success");
+    
+    "{% with message='null' %} {% endwith %}"
   }
 </script>
 <!-- value={{respuesta.proveedor.0.razon_social}}  -->
@@ -29,30 +30,87 @@
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label class="bmd-label-floating">Razon Social</label>
-                          <input type="text" required name="razon_social" class="form-control">
+                          <label class="bmd-label-floating">Proveedor</label>
+                          <input type="text" name="razon_social" class="form-control" data-toggle="modal" data-target="#myModal" readonly>
                         </div>
                       </div>
-                      <div class="col-md-4">
+                      <div class="col-md-6">
                         <div class="form-group">
-                          <label class="bmd-label-floating">Email</label>
-                          <input type="text" required name="email_proveedor" class="form-control">
+                          <label class="bmd-label-floating">Producto</label>
+                          <input type="text" name="email_proveedor" class="form-control" data-toggle="modal" data-target="#myModal" readonly>
                         </div>
                       </div>
 
                     </div>
                     <div class="row">
-                      <div class="col-md-4">
+                      <div class="col-md-6">
                         <div class="form-group">
-                          <label class="bmd-label-floating">Teléfono</label>
-                          <input type="text" required name="telefono" class="form-control">
+                          <label class="bmd-label-floating">Cantidad</label>
+                          <input type="number" name="telefono" class="form-control">
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <input type="date" name="fecha" class="form-control" style="color: lightslategray">
                         </div>
                       </div>
                     </div>
-                    <button type="submit" class="btn btn-primary pull-right">Registrar</button>
+                    <button type="submit" class="btn btn-primary pull-right">Registrar Compra</button>
                     <div class="clearfix"></div>
                   </form>
                 </div>
+              </div>
+            </div>
+            <!-- Modal -->
+            <div id="myModal" class="modal fade" role="dialog">
+              <div class="modal-dialog modal-lg">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h4 class="modal-title">Proveedores Disponibles</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="card-body">
+                      <div class="table-responsive">
+                        <table class="table">
+                          <thead class=" text-primary">
+                            <th>
+                              Nombre del proveedor
+                            </th>
+                            <th>
+                              Email
+                            </th>
+                            <th>
+                              Telefono
+                            </th>
+                          </thead>
+                          <tbody>
+                          <form action="" method="post">
+                            
+                            <tr>
+                              <td class="text-primary">
+                                Kevin Garcia SAS
+                              </td>
+                              <td>
+                                KSGARCIAP@UNBOSQUE.EDU.CO
+                              </td>
+                              <td>
+                                3203421774
+                              </td>
+                            </tr>
+                          </form>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary pull-right" data-dismiss="modal">Cerrar</button>
+                  </div>
+                </div>
+
               </div>
             </div>
             <!-- include profile.hmtl -->
