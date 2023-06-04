@@ -18,35 +18,17 @@
                   <div class="table-responsive">
                     <table class="table">
                       <thead class=" text-primary">
-                        <th hidden>
-                          ID
-                        </th>
-                        <th>
-                          Nombre del producto
-                        </th>
-                        <th>
-                          Valor de compra
-                        </th>
-                        <th>
-                          Valor de venta
-                        </th>
-                        <th>
-                          Ganancias
-                        </th>
-                        <th>
-                          Unidades disponibles
-                        </th>
-                        <th>
-                          Estado
-                        </th>
+                        {% for y in columnas %}
+                            <th>
+                                {{ y }}
+                            </th>
+                            {% endfor %}
                       </thead>
                       <tbody>
-
+                        <form action="" method="post">
+                        {% csrf_token %}
                         {% for x in lista %}
                           <tr>
-                            <td hidden>
-                                {{ x.id_producto }}
-                            </td>
                             <td class="text-primary">
                                 {{ x.nombre_producto }}
                             </td>
@@ -69,8 +51,15 @@
                                     Inactivo
                                 {% endif %}
                           </td>
+                          <td>
+                            <button type="submit" value="{{ x.id_producto }}" name="id_editar" class="btn btn-outline-secondary btn-sm"><i class="material-icons">edit</i></button>
+                          </td>
+                          <td>
+                            <button type="submit" value="{{ x.id_producto }}" name="id_eliminar" class="btn btn-outline-danger btn-sm"><i class="material-icons">delete</i></button>
+                          </td>
                           </tr>
                         {% endfor %}
+                      </form>
                       </tbody>
                     </table>
                   </div>

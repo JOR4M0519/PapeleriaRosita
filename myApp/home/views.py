@@ -75,7 +75,7 @@ def pages(request):
 
                 context['columnas_popu_provee'] = ['Razón social','Teléfono']
                 
-                context['lista_popu_provee'] = [{'id':1,'razon_social':'Cocada','telefono':'El mono'},{'id':2,'razon_social':'Shampoo','telefono':'La caspa'},{'id':3,'razon_social':'Cocada','telefono':'El mono'},{'id':4,'razon_social':'Shampoo','telefono':'La caspa'}]
+                context['lista_popu_provee'] = json.loads(views.ProveedorView().get(request).content)['provider']
                 filtros = {
                     'id_proveedor': 0,
                     'fecha_inicio': '2023-01-30',
@@ -93,7 +93,7 @@ def pages(request):
                 context['titulo_tabla'] = 'Productos'
                 context['subtitulo_tabla'] = 'Lista detallada de los productos existentes en el inventario'
                 #Lista de JSON Ras - Mantener nombres de claves para que se haga la lista en el HTLM
-                context['columnas'] = ['Nombre del producto','Nombre del proveedor','Cantidad comprada','Fecha']
+                context['columnas'] = ['Nombre del producto','Valor compra','Valor venta','Valor ganancia','Cantidad comprada','Estado']
                 context['lista'] = json.loads(views.ProductoView().get(request).content)['products']
                 return HttpResponse(html_template.render(context,request))
 
@@ -119,7 +119,16 @@ def pages(request):
             context['encabezado'] = 'Agregar producto'
             
             return HttpResponse(html_template.render(context, request))
+
+          elif load_template == 'tables-productos.html':
+             
+             if request.POST.get('id_eliminar')!=None:
+                id_eliminar= request.POST.get('id_eliminar')
             
+             elif request.POST.get('id_editar')!=None:
+                id_product= request.POST.get('id_editar')
+
+             return redirect(load_template)
             #Proveedores
           elif load_template == 'page-crte-proveedores.html':
             if request.POST.get('id_proveedor')==None:
@@ -140,7 +149,6 @@ def pages(request):
 
             if request.POST.get('id_eliminar')!=None:
                 id_eliminar= request.POST.get('id_eliminar')
-            
                 
             elif request.POST.get('id_editar')!=None:
                 
@@ -171,6 +179,12 @@ def pages(request):
             elif request.POST.get('boton_filtro')!=None:
                 print('Generar reporte seleccionado')
             return redirect(load_template)
+          
+          
+
+
+
+
 
     except template.TemplateDoesNotExist:
 
