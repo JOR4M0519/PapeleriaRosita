@@ -1,0 +1,75 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} UI Tables {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+        <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-primary">
+                  <h4 class="card-title ">{{ titulo_tabla }}</h4>
+                  <p class="card-category"> {{ subtitulo_tabla }}</p>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead class=" text-primary">
+                        <th hidden>
+                          ID
+                        </th>
+                        <th>
+                          Nombre del producto
+                        </th>
+                        <th>
+                          Valor de compra
+                        </th>
+                        <th>
+                          Valor de venta
+                        </th>
+                        <th>
+                          Ganancias
+                        </th>
+                        <th>
+                          Unidades disponibles
+                        </th>
+                        <th>
+                          Ganancias
+                        </th>
+                      </thead>
+                      <tbody>
+
+                        {% for x in lista %}
+                          <tr>
+                            <td hidden>
+                              {{ x.id }}
+                            </td>
+                            <td class="text-primary">
+                              {{ x.producto }}
+                            </td>
+                            <td>
+                              {{ x.proveedor }}
+                            </td>
+                            <td>
+                              {{ x.cantidad }}
+                            </td>
+                            <td>
+                              {{ x.fecha }}
+                            </td>
+                          </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

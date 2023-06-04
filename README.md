@@ -18,6 +18,7 @@ pip install gunicorn
 pip install pycodestyle
 pip install pytz
 pip install sqlparse
+    pip install django-bootstrap-daterangepicker
 * Actualización cambios de BD: 'python manage.py makemigrations'
 * Crear BD POSTGRESQL en la maquina Local nombre = PapeleriaRosita
 * Carga de las tablas: 'python manage.py migrate'
