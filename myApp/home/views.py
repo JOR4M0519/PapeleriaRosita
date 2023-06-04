@@ -43,7 +43,7 @@ def pages(request):
 
             if load_template == 'page-user.html':
                 html_template = loader.get_template('home/' + load_template)
-                views.UsuarioView.get
+                #views.UsuarioView.get
 
                 return HttpResponse(html_template.render(context,request))
 
@@ -72,8 +72,8 @@ def pages(request):
                 context['subtitulo_tabla'] = 'Lista detallada de compras realizadas'
                 filtros = {
                     'id_proveedor': 0,
-                    'fecha_inicio': '2023-06-30',
-                    'fecha_final': '2023-01-30'
+                    'fecha_inicio': '2023-01-30',
+                    'fecha_final': '2023-06-30'
                 }
 
                 context['label_filtro'] = 'proveedores'
