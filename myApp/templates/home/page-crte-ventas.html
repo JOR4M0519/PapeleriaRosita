@@ -10,12 +10,11 @@
 
 {% block content %}
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-<script>  
-  let alerta = "{{result}}"
-  if(alerta == "Success"){
+<script>
+  let alerta = "{{message}}"
+  if(alerta != null){
+    console.log(alerta)
     swal("Éxitoso", "El producto se ha creado", "success");
-  }else if (alerta == "Error"){
-    swal("Error", "Error guardando datos", "error");
   }
 </script>
           <div class="row">
@@ -33,27 +32,15 @@
                       <div class="col-md-12">
                         <div class="form-group">
                           <label class="bmd-label-floating">Nombre del Producto</label>
-                          <input required type="text" name="nombre_producto" class="form-control">
+                          <input required type="text" name="nombre_producto" class="form-control" data-toggle="modal" data-target="#myModal" readonly>
                         </div>
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col-md-4">
+                      <div class="col-md-12">
                         <div class="form-group">
-                          <label class="bmd-label-floating">Valor</label>
-                          <input required type="text" name="valor_venta" class="form-control">
-                        </div>
-                      </div>
-                      <div class="col-md-4">
-                        <div class="form-group">
-                          <label class="bmd-label-floating">Valor Venta</label>
-                          <input required type="text" name="valor_venta" class="form-control">
-                        </div>
-                      </div>
-                      <div class="col-md-4">
-                        <div class="form-group">
-                          <label class="bmd-label-floating">Valor ganancia</label>
-                          <input required  type="text" name="valor_ganancia" class="form-control">
+                          <label class="bmd-label-floating">Cantidad</label>
+                          <input required type="number" name="valor_venta" class="form-control">
                         </div>
                       </div>
                     </div>
@@ -61,6 +48,58 @@
                     <div class="clearfix"></div>
                   </form>
                 </div>
+              </div>
+            </div>
+            <!-- Modal -->
+            <div id="myModal" class="modal fade" role="dialog">
+              <div class="modal-dialog modal-lg">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h4 class="modal-title">Productos Disponibles</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="card-body">
+                      <div class="table-responsive">
+                        <table class="table">
+                          <thead class=" text-primary">
+                            <th>
+                              Nombre del proveedor
+                            </th>
+                            <th>
+                              Email
+                            </th>
+                            <th>
+                              Telefono
+                            </th>
+                          </thead>
+                          <tbody>
+                          <form action="" method="post">
+                            
+                            <tr>
+                              <td class="text-primary">
+                                Kevin Garcia SAS
+                              </td>
+                              <td>
+                                KSGARCIAP@UNBOSQUE.EDU.CO
+                              </td>
+                              <td>
+                                3203421774
+                              </td>
+                            </tr>
+                          </form>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary pull-right" data-dismiss="modal">Cerrar</button>
+                  </div>
+                </div>
+
               </div>
             </div>
             <!-- include profile.hmtl -->
