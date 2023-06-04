@@ -68,11 +68,20 @@ def pages(request):
                 #Lista de JSON Ras - Mantener nombres de claves para que se haga la lista en el HTLM
                 context['columnas'] = ['Nombre del producto','Nombre del proveedor','Cantidad comprada','Fecha']
 
-                context['lista'] = [{'id':1,'producto':'Cocada','proveedor':'El mono','cantidad':10,'fecha':'10/5/231'},{'id':2,'producto':'Shampoo','proveedor':'La caspa','cantidad':12,'fecha':'10/5/231'},{'id':3,'producto':'Cocada','proveedor':'El mono','cantidad':10,'fecha':'10/5/231'},{'id':4,'producto':'Shampoo','proveedor':'La caspa','cantidad':12,'fecha':'11/5/231'}]
-
                 context['columnas_popu_provee'] = ['Razón social','Teléfono']
                 
                 context['lista_popu_provee'] = [{'id':1,'razon_social':'Cocada','telefono':'El mono'},{'id':2,'razon_social':'Shampoo','telefono':'La caspa'},{'id':3,'razon_social':'Cocada','telefono':'El mono'},{'id':4,'razon_social':'Shampoo','telefono':'La caspa'}]
+                filtros = {
+                    'id_proveedor': 0,
+                    'fecha_inicio': '2023-06-30',
+                    'fecha_final': '2023-01-30'
+                }
+
+                context['label_filtro'] = 'proveedores'
+
+                #Lista de JSON Ras - Mantener nombres de claves para que se haga la lista en el HTLM
+                context['lista'] = json.loads(views.DetalleCompraView().get(filtros).content)
+                print(context['lista'])
                 return HttpResponse(html_template.render(context,request))
 
             elif load_template == 'tables-productos.html':
@@ -80,11 +89,12 @@ def pages(request):
                 context['subtitulo_tabla'] = 'Lista detallada de los productos existentes en el inventario'
                 #Lista de JSON Ras - Mantener nombres de claves para que se haga la lista en el HTLM
                 context['columnas'] = ['Nombre del producto','Nombre del proveedor','Cantidad comprada','Fecha']
-                context['lista'] = [{'id':1,'producto':'Cocada','proveedor':'El mono','cantidad':10,'fecha':'10/5/231'},{'id':2,'producto':'Shampoo','proveedor':'La caspa','cantidad':12,'fecha':'10/5/231'},{'id':3,'producto':'Cocada','proveedor':'El mono','cantidad':10,'fecha':'10/5/231'},{'id':4,'producto':'Shampoo','proveedor':'La caspa','cantidad':12,'fecha':'11/5/231'}]
+                context['lista'] = json.loads(views.ProductoView().get(request).content)['products']
                 return HttpResponse(html_template.render(context,request))
 
             return HttpResponse(html_template.render(context, request))
 
+        #POST
         else:
 
           html_template = loader.get_template('home/' + load_template)

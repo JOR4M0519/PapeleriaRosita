@@ -1,11 +1,11 @@
 import json
-
-from django.contrib.auth.decorators import login_required
+import psycopg2
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
+
 from .models import Producto, Proveedor, DetallesVenta, DetallesCompra, Usuario
 from .forms import login, signup
 
@@ -220,19 +220,32 @@ class DetalleCompraView(View):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
-    def get(self, request, id=0):
-        if (id > 0):
-            details = list(DetallesCompra.objects.filter(id_detcompra=id).values())
-            if len(details) > 0:
-                datos = {'message': "Success", 'details': details[0]}
+    def get(self, request):
+        try:
+            ps_connection = psycopg2.connect(user="postgres",
+                                             password="29714526?",
+                                             host="localhost",
+                                             port="5432",
+                                             database="PapeleriaRosita")
+            cursor = ps_connection.cursor()
+            if request['id_proveedor'] == 0:
+                cursor.callproc('fn_reportecompra', [request['fecha_inicio'],request['fecha_final']])
             else:
-                datos = {'message': "Detalle no Encontrado"}
-        else:
-            details = list(DetallesCompra.objects.values())
-            if len(details) > 0:
-                datos = {'message': "Success", 'details': details}
+                cursor.callproc('fn_reportecompraproveedor', [request['id_proveedor'],request['fecha_inicio'],request['fecha_final']])
+            result = cursor.fetchone()
+            if result[0] is not None:
+                datos = {'message': 'Success', 'details': result[0]}
             else:
-                datos = {'message': "No existen Detalles"}
+                datos = {'message': 'No se encontro ningun detalle'}
+
+        except (Exception, psycopg2.DatabaseError) as error:
+            print("Error while connecting to PostgreSQL", error)
+
+        finally:
+            # closing database connection.
+            if ps_connection:
+                cursor.close()
+                ps_connection.close()
 
         return JsonResponse(datos)
 
@@ -277,18 +290,31 @@ class DetalleVentaView(View):
         return super().dispatch(request, *args, **kwargs)
 
     def get(self, request, id=0):
-        if (id > 0):
-            details = list(DetallesVenta.objects.filter(id_detventa=id).values())
-            if len(details) > 0:
-                datos = {'message': "Success", 'details': details[0]}
+        try:
+            ps_connection = psycopg2.connect(user="postgres",
+                                             password="29714526?",
+                                             host="localhost",
+                                             port="5432",
+                                             database="PapeleriaRosita")
+            cursor = ps_connection.cursor()
+            if request['id_producto'] == 0:
+                cursor.callproc('fn_reporteventa', [request['fecha_inicio'], request['fecha_final']])
             else:
-                datos = {'message': "Detalle no Encontrado"}
-        else:
-            details = list(DetallesVenta.objects.values())
-            if len(details) > 0:
-                datos = {'message': "Success", 'details': details}
+                cursor.callproc('fn_reporteventaproducto', [request['id_proveedor'], request['fecha_inicio'], request['fecha_final']])
+            result = cursor.fetchone()
+            if result[0] is not None:
+                datos = {'message': 'Success', 'details': result[0]}
             else:
-                datos = {'message': "No existen Detalles"}
+                datos = {'message': 'No se encontro ningun detalle'}
+
+        except (Exception, psycopg2.DatabaseError) as error:
+            print("Error while connecting to PostgreSQL", error)
+
+        finally:
+            # closing database connection.
+            if ps_connection:
+                cursor.close()
+                ps_connection.close()
 
         return JsonResponse(datos)
 

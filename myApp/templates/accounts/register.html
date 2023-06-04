@@ -5,35 +5,38 @@
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}{% endblock stylesheets %}
 
+
+
 {% block content %}
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+  let alerta = "{{success}}"
+  console.log(alerta)
+  if(alerta=='True'){
+    swal("Éxitoso", "El usuario se creo exitosamente", "success");
+  }else if (alerta=='False'){
+    swal("Error", "El usuario no fue crado", "error");
+  }
+</script>
 
   <div class="row">
     <div class="col-md-10">
       <div class="card">
         <div class="card-header card-header-primary">
           <h4 class="card-title">
-            Create Account
+            Crear usuario
           </h4>
         </div>
         <div class="card-body">
 
           <h6 class="card-category">
-              {% if msg %}
-                <span class="text-danger">{{ msg | safe }}</span>
-              {% else %}
-                Add your credentials
-              {% endif %}  
+            {% if msg %}
+              <span class="text-danger">{{ msg | safe }}</span>
+            {% else %}
+              Registra los datos del usuario
+            {% endif %}  
           </h6>
           
-          <br />
-
-          {% if success %}
-
-            <p class="">
-              Please <a href="{% url 'login' %}" class="text-black text-small">authenticate</a> using the new account.
-            </p>  
-
-          {% else %}
             <form method="post" action="">
                 
               {% csrf_token %} 
@@ -42,10 +45,7 @@
                 <div class="col-md-4">
                   <div class="form-group">
                     <label class="bmd-label-floating">Rol</label>
-                    <select class="form-select" id="selection" name="rol">
-                      <option>Administrador</option>
-                      <option>Vendedor</option>
-                  </select>
+                    {{form.is_superuser}}
                   </div>
                 </div>
               </div>
@@ -55,14 +55,16 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="bmd-label-floating">Usuario</label>
-                    <input required type="text" name="username" class="form-control">
+                    {{ form.username }}
                   </div>
+                  <span class="text-danger">{{ form.username.errors }}</span>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="bmd-label-floating">Correo</label>
-                    <input required type="email" name="email" class="form-control">
+                    {{ form.email }}
                   </div>
+                  <span class="text-danger">{{ form.email.errors }}</span>
                 </div>
               </div>
 
@@ -71,41 +73,42 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="bmd-label-floating">Primer nombre</label>
-                    <input required type="text" name="username" class="form-control">
+                    {{ form.first_name }}
                   </div>
+                  <span class="text-danger">{{ form.first_name.errors }}</span>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label class="bmd-label-floating">Segundo nombre</label>
-                    <input required type="text" name="username" class="form-control">
+                    <label class="bmd-label-floating">Apellido</label>
+                    {{form.last_name}}
                   </div>
+                  <span class="text-danger">{{ form.last_name.errors }}</span>
                 </div>
               </div>
-
-
-
+              
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="bmd-label-floating">Contraseña</label>
-                    <input required type="password" name="password1" class="form-control">
+                    {{form.password1}}
                   </div>
+                  <span class="text-danger">{{ form.password1.errors }}</span>
                 </div>
+                
                 <div class="col-md-6">
                   <div class="form-group">
                     <label class="bmd-label-floating">Confirmación de la contraseña</label>
-                    <input required type="password" name="password2" class="form-control">
+                    {{form.password2}}
                   </div>
                 </div>
+                <span class="text-danger">{{ form.password2.errors }}</span>
               </div>
-
-
-              <button type="submit" name="register" class="btn btn-primary pull-left">Register</button>
-
-              <div class="clearfix"></div>
+              
+              
+              <button type="submit" name="register" class="btn btn-primary pull-left">Crear usuario</button>
 
             </form>
-          {% endif %}
+          
 
         </div>
       </div>
