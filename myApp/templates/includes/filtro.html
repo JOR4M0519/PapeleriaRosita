@@ -1,3 +1,22 @@
 <div>
-    
+    <form action="" method="post" class="form-inline">
+        {% csrf_token %}
+        <div style="position: relative; margin-right: 4%;" class="form-group label_filtro">
+            <label style=" position: absolute; 
+            margin-bottom: 35%;">Fecha de inicio</label>
+            <input type="date" autocomplete="off" name="fecha_inicio" id="este" required>
+        </div>
+        <div style="position: relative; margin-right: 4%;" class="form-group">
+            <label class="label_filtro" style=" position: absolute; 
+            margin-bottom: 35%;">Fecha de fin</label>
+            <input type="date" autocomplete="off" name="fecha_final" required>
+
+        </div>
+        <div style="position: relative; margin-right: 4%;" class="form-group">
+            <input type="checkbox" name="filtrar_por" id="check">     
+            <label for="check">&nbsp;&nbsp;Filtrar por {{ label_filtro }}</label>
+        </div>
+        <button type="submit" class="btn btn-outline-primary btn-sm" name="boton_filtro" value="."><i class="material-icons">book</i>&nbsp;Generar reporte</button>
+    </form>
+
 </div>
