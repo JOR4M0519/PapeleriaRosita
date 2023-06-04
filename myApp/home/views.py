@@ -75,7 +75,8 @@ def pages(request):
 
                 context['columnas_popu_provee'] = ['Razón social','Teléfono']
                 
-                context['lista_popu_provee'] = [{'id':1,'razon_social':'Cocada','telefono':'El mono'},{'id':2,'razon_social':'Shampoo','telefono':'La caspa'},{'id':3,'razon_social':'Cocada','telefono':'El mono'},{'id':4,'razon_social':'Shampoo','telefono':'La caspa'}]
+                context['lista_popu_provee'] = json.loads(views.ProveedorView().get(request).content)['provider']
+
                 filtros = {
                     'id_proveedor': 0,
                     'fecha_inicio': '2023-01-30',
@@ -86,7 +87,6 @@ def pages(request):
 
                 #Lista de JSON Ras - Mantener nombres de claves para que se haga la lista en el HTLM
                 context['lista'] = json.loads(views.DetalleCompraView().get(filtros).content)
-                print(context['lista'])
                 return HttpResponse(html_template.render(context,request))
 
             elif load_template == 'tables-productos.html':
@@ -169,8 +169,34 @@ def pages(request):
                 return HttpResponse(html_template.render(context, request))
             
             elif request.POST.get('boton_filtro')!=None:
-                print('Generar reporte seleccionado')
-            return redirect(load_template)
+
+                if request.POST.get('id_seleccion') != None:
+                    id_seleccion = request.POST.get('id_seleccion')
+                    print(id_seleccion)
+                else:
+                    print('no')
+
+                context['titulo_tabla'] = 'Compras'
+                context['subtitulo_tabla'] = 'Lista detallada de compras realizadas'
+                # Lista de JSON Ras - Mantener nombres de claves para que se haga la lista en el HTLM
+                context['columnas'] = ['Nombre del producto', 'Nombre del proveedor', 'Cantidad comprada', 'Fecha']
+
+                context['columnas_popu_provee'] = ['Razón social', 'Teléfono']
+
+                context['lista_popu_provee'] = json.loads(views.ProveedorView().get(request).content)['provider']
+                print(request)
+                filtros = {
+                    'id_proveedor': request.POST['razon_social'],
+                    'fecha_inicio': request.POST['fecha_inicio'],
+                    'fecha_final': request.POST['fecha_final']
+                }
+
+                context['label_filtro'] = 'proveedores'
+
+                # Lista de JSON Ras - Mantener nombres de claves para que se haga la lista en el HTLM
+                context['lista'] = json.loads(views.DetalleCompraView().get(filtros).content)
+                return HttpResponse(html_template.render(context, request))
+            return redirect(load_template,)
 
     except template.TemplateDoesNotExist:
 
