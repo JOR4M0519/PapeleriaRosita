@@ -54,10 +54,10 @@
                   {{ x.fecha }}
                 </td>
                 <td>
-                  <button type="submit" value="{{ x.id }}" name="id" class="btn btn-outline-secondary btn-sm"><i class="material-icons">edit</i></button>
+                  <button type="submit" value="{{ x.id }}" name="id_edit" class="btn btn-outline-secondary btn-sm"><i class="material-icons">edit</i></button>
                 </td>
                 <td>
-                  <button type="submit" value="{{ x.id }}" name="id" class="btn btn-outline-danger btn-sm"><i class="material-icons">delete</i></button>
+                  <button type="submit" value="{{ x.id }}" name="id_delete" class="btn btn-outline-danger btn-sm"><i class="material-icons">delete</i></button>
                 </td>
               </tr>
               {% endfor %}
@@ -69,7 +69,9 @@
     </div>
   </div>
 </div>
-
+<script>
+  
+</script>
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
