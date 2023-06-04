@@ -37,7 +37,7 @@
                           Unidades disponibles
                         </th>
                         <th>
-                          Ganancias
+                          Estado
                         </th>
                       </thead>
                       <tbody>
@@ -45,20 +45,30 @@
                         {% for x in lista %}
                           <tr>
                             <td hidden>
-                              {{ x.id }}
+                                {{ x.id_producto }}
                             </td>
                             <td class="text-primary">
-                              {{ x.producto }}
+                                {{ x.nombre_producto }}
                             </td>
                             <td>
-                              {{ x.proveedor }}
+                                {{ x.valor_compra }}
                             </td>
                             <td>
-                              {{ x.cantidad }}
+                                {{ x.valor_venta }}
                             </td>
                             <td>
-                              {{ x.fecha }}
+                                {{ x.valor_ganancia }}
                             </td>
+                            <td>
+                                {{ x.stock }}
+                            </td>
+                            <td>
+                                {% if x.estado == "A" %}
+                                    Activo
+                                {% else %}
+                                    Inactivo
+                                {% endif %}
+                          </td>
                           </tr>
                         {% endfor %}
                       </tbody>

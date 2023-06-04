@@ -39,13 +39,13 @@
             <tbody>
             <form action="" method="post">
               {% csrf_token %}
-              {% for x in lista %}
+              {% for x in lista.details %}
               <tr>
                 <td class="text-primary">
-                  {{ x.producto }}
+                  {{ x.nombre_producto }}
                 </td>
                 <td>
-                  {{ x.proveedor }}
+                  {{ x.razon_social }}
                 </td>
                 <td>
                   {{ x.cantidad }}
