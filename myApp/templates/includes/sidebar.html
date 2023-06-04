@@ -23,6 +23,7 @@
             </a>
 
           </li>
+          {% if 'administrador' in rol %}
           <li class="nav-item {% if 'page-user' in segment %} active {% endif %}">
 
             <a class="nav-link listaSidebar" type="button" id="dropdownProvee" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -35,6 +36,7 @@
             </a>
 
           </li>
+          {% endif %}
           <li class="nav-item {% if 'tables-compras' in segment %} active {% endif %}">
 
             <a class="nav-link listaSidebar" type="button" id="dropdownCompras" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

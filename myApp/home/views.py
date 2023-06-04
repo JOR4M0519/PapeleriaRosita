@@ -14,7 +14,9 @@ from django.shortcuts import redirect
 
 @login_required(login_url="/login/")
 def index(request):
-    context = {'segment': 'index'}
+    context = {}
+    context ['segment']= 'index'
+    context ['rol']= 'administrador'
     html_template = loader.get_template('home/index.html')
     return HttpResponse(html_template.render(context, request))
 
@@ -33,6 +35,7 @@ def pages(request):
                 return HttpResponseRedirect(reverse('admin:index'))
 
             context['segment'] = load_template
+            context ['rol']= 'administrador'
             html_template = loader.get_template('home/' + load_template)
 
             #Productos
@@ -42,26 +45,27 @@ def pages(request):
                 return HttpResponse(html_template.render(context,request))
             
             #Proveedores
-            if load_template == 'page-crte-proveedores.html':
+            elif load_template == 'page-crte-proveedores.html':
                 context['message'] = ''
                 context['encabezado'] = 'Agregar Proveedor'
                 return HttpResponse(html_template.render(context,request))
 
             #Compras
-            if load_template == 'page-crte-compras.html':
+            elif load_template == 'page-crte-compras.html':
                 context['message'] = ''
                 context['encabezado'] = 'Registrar Compra'
                 return HttpResponse(html_template.render(context,request))
             
             #Ventas
-            if load_template == 'page-crte-ventas.html':
+            elif load_template == 'page-crte-ventas.html':
                 context['message'] = ''
                 context['encabezado'] = 'Registrar Venta'
                 return HttpResponse(html_template.render(context,request))
             
-            if load_template == 'tables-compras.html':
+            elif load_template == 'tables-compras.html':
                 context['titulo_tabla'] = 'Compras'
                 context['subtitulo_tabla'] = 'Lista detallada de compras realizadas'
+                context['label_filtro'] = 'proveedores'
                 #Lista de JSON Ras - Mantener nombres de claves para que se haga la lista en el HTLM
                 context['lista'] = [{'id':1,'producto':'Cocada','proveedor':'El mono','cantidad':10,'fecha':'10/5/231'},{'id':2,'producto':'Shampoo','proveedor':'La caspa','cantidad':12,'fecha':'10/5/231'},{'id':3,'producto':'Cocada','proveedor':'El mono','cantidad':10,'fecha':'10/5/231'},{'id':4,'producto':'Shampoo','proveedor':'La caspa','cantidad':12,'fecha':'11/5/231'}]
                 return HttpResponse(html_template.render(context,request))
@@ -95,7 +99,7 @@ def pages(request):
             return HttpResponse(html_template.render(context, request))
             
             #Proveedores
-          if load_template == 'page-crte-proveedores.html':
+          elif load_template == 'page-crte-proveedores.html':
             proveedor={'razon_social': request.POST['razon_social'],
                       'email_proveedor': request.POST['email_proveedor'],
                       'telefono': request.POST['telefono'],
@@ -105,9 +109,15 @@ def pages(request):
             context['encabezado'] = 'Agregar Proveedor'
             return HttpResponse(html_template.render(context, request))  
 
-          if load_template == 'tables-compras.html':
-            id_eliminar= request.POST.get('id')
-            print(id_eliminar)
+          elif load_template == 'tables-compras.html':
+
+            if request.POST.get('id_eliminar')!=None:
+                id_eliminar= request.POST.get('id_eliminar')
+                print(id_eliminar)
+            elif request.POST.get('id_editar')!=None:
+                id_editar= request.POST.get('id_editar')
+                print(id_editar)
+            
             return redirect(load_template)
 
     except template.TemplateDoesNotExist:
