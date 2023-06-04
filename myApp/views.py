@@ -5,9 +5,10 @@ from django.http import HttpResponse, JsonResponse
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
-
-from .models import Producto, Proveedor, DetallesVenta, DetallesCompra, Usuario
+from mysite.settings import DATABASES 
+from .models import Producto, Proveedor, DetallesVenta, DetallesCompra, Usuario, AuthUser
 from .forms import login, signup
+
 
 lista=[]
 empleados=[]
@@ -42,7 +43,7 @@ class ProductoView(View):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
-    def get(self, request, id=0):
+    def get(self,request,id=0):
         if (id > 0):
             products = list(Producto.objects.filter(id_producto=id).values())
             if len(products) > 0:
@@ -56,6 +57,7 @@ class ProductoView(View):
             else:
                 datos = {'message': "No existen Productos"}
 
+        
         return JsonResponse(datos)
 
     def post(request):
@@ -69,16 +71,14 @@ class ProductoView(View):
         datos = {'message': "Success"}
         return JsonResponse(datos)
 
-    def put(self, request, id):
-        jd = json.loads(request.body)
+    def put(producto, id):
+        jd = producto
         products = list(Producto.objects.filter(id_producto=id).values())
         if len(products) > 0:
             product = Producto.objects.get(id_producto=id)
             product.nombre_producto = jd['nombre_producto']
             product.valor_compra = jd['valor_compra']
             product.valor_venta = jd['valor_venta']
-            product.valor_ganancia = jd['valor_ganancia']
-            product.stock = jd['stock']
             product.estado = jd['estado']
             product.save()
             datos = {'message': "Success"}
@@ -102,7 +102,7 @@ class ProveedorView(View):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
-    def get(self, request, id=0):
+    def get(self,request,id=0):
         if (id > 0):
             provider = list(Proveedor.objects.filter(id_proveedor=id).values())
             if len(provider) > 0:
@@ -127,7 +127,7 @@ class ProveedorView(View):
         datos = {'message': ""}
         return JsonResponse(datos)
 
-    def put(self, request, id):
+    def put(request, id):
         jd = json.loads(request.body)
         providers = list(Proveedor.objects.filter(id_proveedor=id).values())
         if len(providers) > 0:
@@ -160,13 +160,13 @@ class UsuarioView(View):
 
     def get(self, request, id=0):
         if (id > 0):
-            user = list(Usuario.objects.filter(id_usuario=id).values())
+            user = list(AuthUser.objects.filter(id_usuario=id).values())
             if len(user) > 0:
                 datos = {'message': "Success", 'user': user[0]}
             else:
                 datos = {'message': "Usuario no Encontrado"}
         else:
-            user = list(DetallesVenta.objects.values())
+            user = list(AuthUser.objects.values())
             if len(user) > 0:
                 datos = {'message': "Success", 'users': user}
             else:
@@ -174,9 +174,9 @@ class UsuarioView(View):
 
         return JsonResponse(datos)
 
-    def post(self, request):
+    def post(request):
         jd = json.loads(request.body)
-        Usuario.objects.create(username=jd['username'],
+        AuthUser.objects.create(username=jd['username'],
                                nombre=jd['nombre'],
                                telefono=jd['telefono'],
                                num_identificacion=jd['num_identificacion'],
@@ -186,11 +186,11 @@ class UsuarioView(View):
         datos = {'message': "Success"}
         return JsonResponse(datos)
 
-    def put(self, request, id):
+    def put(request, id):
         jd = json.loads(request.body)
-        details = list(Usuario.objects.filter(id_usuario=id).values())
+        details = list(AuthUser.objects.filter(id_usuario=id).values())
         if len(details) > 0:
-            detail = Usuario.objects.get(id_usuario=id)
+            detail = AuthUser.objects.get(id_usuario=id)
             detail.username = jd['username']
             detail.nombre = jd['nombre']
             detail.telefono = jd['telefono']
@@ -205,9 +205,9 @@ class UsuarioView(View):
         return JsonResponse(datos)
 
     def delete(self, request, id):
-        details = list(DetallesVenta.objects.filter(id_usuario=id).values())
+        details = list(AuthUser.objects.filter(id_usuario=id).values())
         if len(details) > 0:
-            Usuario.objects.filter(id_usuario=id).delete()
+            AuthUser.objects.filter(id_usuario=id).delete()
             datos = {'message': "Success"}
         else:
             datos = {'message': "Usuario no Encontrado"}
@@ -220,10 +220,10 @@ class DetalleCompraView(View):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
-    def get(self, request):
+    def get(self,request):
         try:
             ps_connection = psycopg2.connect(user="postgres",
-                                             password="29714526?",
+                                             password=DATABASES['default']['PASSWORD'],
                                              host="localhost",
                                              port="5432",
                                              database="PapeleriaRosita")
@@ -249,7 +249,7 @@ class DetalleCompraView(View):
 
         return JsonResponse(datos)
 
-    def post(self, request):
+    def post(request):
         jd = json.loads(request.body)
         DetallesCompra.objects.create(id_producto_id=jd['id_producto'],
                                       id_proveedor_id=jd['id_proveedor'],
@@ -258,7 +258,7 @@ class DetalleCompraView(View):
         datos = {'message': "Success"}
         return JsonResponse(datos)
 
-    def put(self, request, id):
+    def put(request, id):
         jd = json.loads(request.body)
         details = list(DetallesCompra.objects.filter(id_detcompra=id).values())
         if len(details) > 0:
@@ -292,7 +292,7 @@ class DetalleVentaView(View):
     def get(self, request, id=0):
         try:
             ps_connection = psycopg2.connect(user="postgres",
-                                             password="29714526?",
+                                             password=DATABASES['default']['PASSWORD'],
                                              host="localhost",
                                              port="5432",
                                              database="PapeleriaRosita")
@@ -318,7 +318,7 @@ class DetalleVentaView(View):
 
         return JsonResponse(datos)
 
-    def post(self, request):
+    def post(request):
         jd = json.loads(request.body)
         DetallesVenta.objects.create(id_producto_id=jd['id_producto'],
                                      cantidad=jd['cantidad'],
@@ -326,7 +326,7 @@ class DetalleVentaView(View):
         datos = {'message': "Success"}
         return JsonResponse(datos)
 
-    def put(self, request, id):
+    def put(request, id):
         jd = json.loads(request.body)
         details = list(DetallesVenta.objects.filter(id_detventa=id).values())
         if len(details) > 0:
