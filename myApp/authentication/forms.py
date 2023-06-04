@@ -25,36 +25,56 @@ class LoginForm(forms.Form):
         ))
 
 
-# class SignUpForm(UserCreationForm):
-#     username = forms.CharField(
-#         widget=forms.TextInput(
-#             attrs={
-#                 "placeholder": "Username",
-#                 "class": "form-control"
-#             }
-#         ))
-#     email = forms.EmailField(
-#         widget=forms.EmailInput(
-#             attrs={
-#                 "placeholder": "Email",
-#                 "class": "form-control"
-#             }
-#         ))
-#     password1 = forms.CharField(
-#         widget=forms.PasswordInput(
-#             attrs={
-#                 "placeholder": "Password",
-#                 "class": "form-control"
-#             }
-#         ))
-#     password2 = forms.CharField(
-#         widget=forms.PasswordInput(
-#             attrs={
-#                 "placeholder": "Password check",
-#                 "class": "form-control"
-#             }
-#         ))
+class SignUpForm(UserCreationForm):
 
-#     class Meta:
-#         model = User
-#         fields = ('username', 'email', 'password1', 'password2')
+    region = ((True,'Administrador'),(False, 'Vendedor'))
+
+    is_superuser = forms.ChoiceField(
+        label='',
+        choices=region,
+        widget=forms.Select(
+            attrs={'class':'form-select'}
+        ))
+    
+
+
+    username = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control"
+            }
+        ))
+    email = forms.EmailField(
+        widget=forms.EmailInput(
+            attrs={
+                "class": "form-control"
+            }
+        ))
+    first_name = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control"
+            }
+        ))
+    last_name = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control"
+            }
+        ))
+    password1 = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={
+                "class": "form-control"
+            }
+        ))
+    password2 = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={
+                "class": "form-control"
+            }
+        ))
+
+    class Meta:
+        model = User
+        fields = ('is_superuser','username', 'email', 'first_name' , 'last_name', 'password1', 'password2')

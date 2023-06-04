@@ -79,6 +79,7 @@ def pages(request):
 
             return HttpResponse(html_template.render(context, request))
 
+        #POST
         else:
 
           html_template = loader.get_template('home/' + load_template)
