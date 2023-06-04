@@ -65,15 +65,21 @@ def pages(request):
             elif load_template == 'tables-compras.html':
                 context['titulo_tabla'] = 'Compras'
                 context['subtitulo_tabla'] = 'Lista detallada de compras realizadas'
-                context['label_filtro'] = 'proveedores'
                 #Lista de JSON Ras - Mantener nombres de claves para que se haga la lista en el HTLM
+                context['columnas'] = ['Nombre del producto','Nombre del proveedor','Cantidad comprada','Fecha']
+
                 context['lista'] = [{'id':1,'producto':'Cocada','proveedor':'El mono','cantidad':10,'fecha':'10/5/231'},{'id':2,'producto':'Shampoo','proveedor':'La caspa','cantidad':12,'fecha':'10/5/231'},{'id':3,'producto':'Cocada','proveedor':'El mono','cantidad':10,'fecha':'10/5/231'},{'id':4,'producto':'Shampoo','proveedor':'La caspa','cantidad':12,'fecha':'11/5/231'}]
+
+                context['columnas_popu_provee'] = ['Razón social','Teléfono']
+                
+                context['lista_popu_provee'] = [{'id':1,'razon_social':'Cocada','telefono':'El mono'},{'id':2,'razon_social':'Shampoo','telefono':'La caspa'},{'id':3,'razon_social':'Cocada','telefono':'El mono'},{'id':4,'razon_social':'Shampoo','telefono':'La caspa'}]
                 return HttpResponse(html_template.render(context,request))
 
             elif load_template == 'tables-productos.html':
                 context['titulo_tabla'] = 'Productos'
                 context['subtitulo_tabla'] = 'Lista detallada de los productos existentes en el inventario'
                 #Lista de JSON Ras - Mantener nombres de claves para que se haga la lista en el HTLM
+                context['columnas'] = ['Nombre del producto','Nombre del proveedor','Cantidad comprada','Fecha']
                 context['lista'] = [{'id':1,'producto':'Cocada','proveedor':'El mono','cantidad':10,'fecha':'10/5/231'},{'id':2,'producto':'Shampoo','proveedor':'La caspa','cantidad':12,'fecha':'10/5/231'},{'id':3,'producto':'Cocada','proveedor':'El mono','cantidad':10,'fecha':'10/5/231'},{'id':4,'producto':'Shampoo','proveedor':'La caspa','cantidad':12,'fecha':'11/5/231'}]
                 return HttpResponse(html_template.render(context,request))
 
@@ -116,7 +122,9 @@ def pages(request):
             elif request.POST.get('id_editar')!=None:
                 id_editar= request.POST.get('id_editar')
                 print(id_editar)
-            
+            elif request.POST.get('boton_filtro')!=None:
+                print('Generar reporte seleccionado')
+  
             return redirect(load_template)
 
     except template.TemplateDoesNotExist:
