@@ -12,10 +12,6 @@ router.register('api/detallesVenta',DetallesCompraViewSet,'detallesVenta')
 
 urlpatterns = [
 
-    path('', views.index, name='index'),
-    path('sigup/', views.sign_up, name='sigup'),
-    path('login/', views.log_in, name='login'),
-    # path('', views.index),
     path('producto/', views.ProductoView.as_view()),
     path('producto/<int:id>', views.ProductoView.as_view()),
     path('proveedor/', views.ProveedorView.as_view()),
@@ -30,4 +26,5 @@ urlpatterns = [
 ]
 
 urlpatterns += router.urls
+
 

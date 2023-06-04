@@ -1,0 +1,72 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Page User {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+{% endblock stylesheets %}
+
+<!-- value={{respuesta.products.0.nombre_producto}}  -->
+
+{% block content %}
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+  let alerta = "{{message}}"
+  if(alerta != null){
+    console.log(alerta)
+    swal("Éxitoso", "El producto se ha creado", "success");
+  }
+</script>
+          <div class="row">
+            <div class="col-md-8">
+              <div class="card">
+                <div class="card-header card-header-primary">
+                  <h4 class="card-title">{{encabezado}}</h4>
+                  <p class="card-category"> Ventas </p>
+                </div>
+                <div class="card-body">
+                  
+                  <form method="POST">
+                    {% csrf_token %}
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">Nombre del Producto</label>
+                          <input required type="text" name="nombre_producto" class="form-control">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">Valor</label>
+                          <input required type="text" name="valor_venta" class="form-control">
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">Valor Venta</label>
+                          <input required type="text" name="valor_venta" class="form-control">
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">Valor ganancia</label>
+                          <input required  type="text" name="valor_ganancia" class="form-control">
+                        </div>
+                      </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary pull-right">Crear producto</button>
+                    <div class="clearfix"></div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <!-- include profile.hmtl -->
+          </div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+{% endblock javascripts %}

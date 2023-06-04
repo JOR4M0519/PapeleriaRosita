@@ -12,25 +12,18 @@ from .forms import login, signup
 lista=[]
 empleados=[]
 
-def index(request):
-    return render(request, 'index.html',{
-        'listaUsuario': lista
-    })
-
-
-def sign_up(request):
-    return render(request, 'signup.html')
-
 def log_in(request):
+    print('hello')
     if request.method == 'GET':
       return render(request, 'login.html',{
         'form': login()
       })
     else:
+        
         lista.append({
            'nombreUsuario': request.POST['username'],
             'contrasena': request.POST['password'] })
-        return redirect('index')
+        return redirect('login') #redirect('index')
 
 def sign_up(request):
     if request.method == 'GET':
@@ -42,14 +35,6 @@ def sign_up(request):
            'nombreEmpleado': request.POST['nombreEmpleado'],
             'edad': request.POST['edad'] })
         return redirect('index')
-
-# Create your views here.
-
-# def index(request):
-#     return render(request, 'index.html')
-#
-# def index(request):
-#     return render(request, 'proveedor.html')
 
 class ProductoView(View):
 
@@ -73,8 +58,8 @@ class ProductoView(View):
 
         return JsonResponse(datos)
 
-    def post(self, request):
-        jd = json.loads(request.body)
+    def post(request):
+        jd = (request)
         Producto.objects.create(nombre_producto=jd['nombre_producto'],
                                 valor_compra=jd['valor_compra'],
                                 valor_venta=jd['valor_venta'],
@@ -133,13 +118,13 @@ class ProveedorView(View):
 
         return JsonResponse(datos)
 
-    def post(self, request):
-        jd = json.loads(request.body)
+    def post(request):
+        jd = (request)
         Proveedor.objects.create(razon_social=jd['razon_social'],
                                  email_proveedor=jd['email_proveedor'],
                                  telefono=jd['telefono'],
                                  estado=jd['estado'])
-        datos = {'message': "Success"}
+        datos = {'message': ""}
         return JsonResponse(datos)
 
     def put(self, request, id):

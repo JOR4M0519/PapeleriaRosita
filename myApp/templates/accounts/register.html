@@ -8,7 +8,7 @@
 {% block content %}
 
   <div class="row">
-    <div class="col-md-5">
+    <div class="col-md-10">
       <div class="card">
         <div class="card-header card-header-primary">
           <h4 class="card-title">
@@ -34,63 +34,77 @@
             </p>  
 
           {% else %}
-            <form role="form" method="post" action="">
+            <form method="post" action="">
                 
               {% csrf_token %} 
 
               <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-4">
                   <div class="form-group">
-                    <label class="bmd-label-floating">Username</label>
-                    {{ form.username }}
+                    <label class="bmd-label-floating">Rol</label>
+                    <select class="form-select" id="selection" name="rol">
+                      <option>Administrador</option>
+                      <option>Vendedor</option>
+                  </select>
                   </div>
                 </div>
               </div>
-              <span class="text-danger">{{ form.username.errors }}</span>
 
-              <br />
 
               <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-6">
                   <div class="form-group">
-                    <label class="bmd-label-floating">Email</label>
-                    {{ form.email }}
+                    <label class="bmd-label-floating">Usuario</label>
+                    <input required type="text" name="username" class="form-control">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="bmd-label-floating">Correo</label>
+                    <input required type="email" name="email" class="form-control">
                   </div>
                 </div>
               </div>
-              <span class="text-danger">{{ form.email.errors }}</span>
 
-              <br />
 
               <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-6">
                   <div class="form-group">
-                    <label class="bmd-label-floating">Password</label>
-                    {{ form.password1 }}
+                    <label class="bmd-label-floating">Primer nombre</label>
+                    <input required type="text" name="username" class="form-control">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="bmd-label-floating">Segundo nombre</label>
+                    <input required type="text" name="username" class="form-control">
                   </div>
                 </div>
               </div>
-              <span class="text-danger">{{ form.password1.errors }}</span>
 
-              <br />
+
 
               <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-6">
                   <div class="form-group">
-                    <label class="bmd-label-floating">Password Check</label>
-                    {{ form.password2 }}
+                    <label class="bmd-label-floating">Contraseña</label>
+                    <input required type="password" name="password1" class="form-control">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="bmd-label-floating">Confirmación de la contraseña</label>
+                    <input required type="password" name="password2" class="form-control">
                   </div>
                 </div>
               </div>
-              <span class="text-danger">{{ form.password2.errors }}</span>
 
-              <br />
 
               <button type="submit" name="register" class="btn btn-primary pull-left">Register</button>
 
               &nbsp; &nbsp; 
               <span class="pull-right">
-                Have an account? <a href="{% url 'login' %}" class="text-primary">Login</a>
+              ¿Posee una cuenta? <a href="{% url 'login' %}" class="text-primary">Login</a>
               </span>
 
               <div class="clearfix"></div>
