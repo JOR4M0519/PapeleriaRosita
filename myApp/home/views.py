@@ -9,6 +9,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.urls import reverse
 from .. import views
+from django.shortcuts import redirect
+
 
 @login_required(login_url="/login/")
 def index(request):
@@ -21,7 +23,7 @@ def pages(request):
     # All resource paths end in .html.
     # Pick out the html file name from the url. And load that template.
     try:
-
+        
         load_template = request.path.split('/')[-1]
 
         if request.method == 'GET':
@@ -45,17 +47,30 @@ def pages(request):
                 return HttpResponse(html_template.render(context,request))
 
             #Compras
-            if load_template == 'page-crte-proveedores.html':
+            if load_template == 'page-crte-compras.html':
                 context['message'] = ''
-                context['encabezado'] = 'Agregar Proveedor'
+                context['encabezado'] = 'Registrar Compra'
                 return HttpResponse(html_template.render(context,request))
             
             #Ventas
-            if load_template == 'page-crte-proveedores.html':
+            if load_template == 'page-crte-ventas.html':
                 context['message'] = ''
-                context['encabezado'] = 'Agregar Proveedor'
+                context['encabezado'] = 'Registrar Venta'
                 return HttpResponse(html_template.render(context,request))
             
+            if load_template == 'tables-compras.html':
+                context['titulo_tabla'] = 'Compras'
+                context['subtitulo_tabla'] = 'Lista detallada de compras realizadas'
+                #Lista de JSON Ras - Mantener nombres de claves para que se haga la lista en el HTLM
+                context['lista'] = [{'id':1,'producto':'Cocada','proveedor':'El mono','cantidad':10,'fecha':'10/5/231'},{'id':2,'producto':'Shampoo','proveedor':'La caspa','cantidad':12,'fecha':'10/5/231'},{'id':3,'producto':'Cocada','proveedor':'El mono','cantidad':10,'fecha':'10/5/231'},{'id':4,'producto':'Shampoo','proveedor':'La caspa','cantidad':12,'fecha':'11/5/231'}]
+                return HttpResponse(html_template.render(context,request))
+
+            elif load_template == 'tables-productos.html':
+                context['titulo_tabla'] = 'Productos'
+                context['subtitulo_tabla'] = 'Lista detallada de los productos existentes en el inventario'
+                #Lista de JSON Ras - Mantener nombres de claves para que se haga la lista en el HTLM
+                context['lista'] = [{'id':1,'producto':'Cocada','proveedor':'El mono','cantidad':10,'fecha':'10/5/231'},{'id':2,'producto':'Shampoo','proveedor':'La caspa','cantidad':12,'fecha':'10/5/231'},{'id':3,'producto':'Cocada','proveedor':'El mono','cantidad':10,'fecha':'10/5/231'},{'id':4,'producto':'Shampoo','proveedor':'La caspa','cantidad':12,'fecha':'11/5/231'}]
+                return HttpResponse(html_template.render(context,request))
 
             return HttpResponse(html_template.render(context, request))
 
@@ -87,6 +102,11 @@ def pages(request):
             context['message'] = message['message']
             context['encabezado'] = 'Agregar Proveedor'
             return HttpResponse(html_template.render(context, request))  
+
+          if load_template == 'tables-compras.html':
+            id_eliminar= request.POST.get('id')
+            print(id_eliminar)
+            return redirect(load_template)
 
     except template.TemplateDoesNotExist:
 
