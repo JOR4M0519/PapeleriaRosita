@@ -226,7 +226,7 @@ class DetalleCompraView(View):
                                              password=DATABASES['default']['PASSWORD'],
                                              host="localhost",
                                              port="5432",
-                                             database="PapeleriaRosita")
+                                             database=DATABASES['default']['NAME'])
             cursor = ps_connection.cursor()
             if request['id_proveedor'] == 0:
                 cursor.callproc('fn_reportecompra', [request['fecha_inicio'],request['fecha_final']])
@@ -295,7 +295,7 @@ class DetalleVentaView(View):
                                              password=DATABASES['default']['PASSWORD'],
                                              host="localhost",
                                              port="5432",
-                                             database="PapeleriaRosita")
+                                             database=DATABASES['default']['NAME'])
             cursor = ps_connection.cursor()
             if request['id_producto'] == 0:
                 cursor.callproc('fn_reporteventa', [request['fecha_inicio'], request['fecha_final']])

@@ -70,6 +70,12 @@ def pages(request):
             elif load_template == 'tables-compras.html':
                 context['titulo_tabla'] = 'Compras'
                 context['subtitulo_tabla'] = 'Lista detallada de compras realizadas'
+                #Lista de JSON Ras - Mantener nombres de claves para que se haga la lista en el HTLM
+                context['columnas'] = ['Nombre del producto','Nombre del proveedor','Cantidad comprada','Fecha']
+
+                context['columnas_popu_provee'] = ['Razón social','Teléfono']
+                
+                context['lista_popu_provee'] = [{'id':1,'razon_social':'Cocada','telefono':'El mono'},{'id':2,'razon_social':'Shampoo','telefono':'La caspa'},{'id':3,'razon_social':'Cocada','telefono':'El mono'},{'id':4,'razon_social':'Shampoo','telefono':'La caspa'}]
                 filtros = {
                     'id_proveedor': 0,
                     'fecha_inicio': '2023-01-30',
@@ -87,6 +93,7 @@ def pages(request):
                 context['titulo_tabla'] = 'Productos'
                 context['subtitulo_tabla'] = 'Lista detallada de los productos existentes en el inventario'
                 #Lista de JSON Ras - Mantener nombres de claves para que se haga la lista en el HTLM
+                context['columnas'] = ['Nombre del producto','Nombre del proveedor','Cantidad comprada','Fecha']
                 context['lista'] = json.loads(views.ProductoView().get(request).content)['products']
                 return HttpResponse(html_template.render(context,request))
 
@@ -133,6 +140,7 @@ def pages(request):
 
             if request.POST.get('id_eliminar')!=None:
                 id_eliminar= request.POST.get('id_eliminar')
+            
                 
             elif request.POST.get('id_editar')!=None:
                 
@@ -160,6 +168,8 @@ def pages(request):
                 #context['result'] = message['message']
                 return HttpResponse(html_template.render(context, request))
             
+            elif request.POST.get('boton_filtro')!=None:
+                print('Generar reporte seleccionado')
             return redirect(load_template)
 
     except template.TemplateDoesNotExist:
