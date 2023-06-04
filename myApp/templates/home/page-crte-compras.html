@@ -7,13 +7,12 @@
 
 {% block content %}
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-<script>
+<script>  
   let alerta = "{{message}}"
-  if(alerta = "Success"){
-    console.log(alerta)
-    swal("Éxitoso", "El proveedor se ha creado", "success");
-    
-    "{% with message='null' %} {% endwith %}"
+  if(alerta == "Success"){
+    swal("Éxitoso", "El producto se ha creado", "success");
+  }else if (alerta == "Error"){
+    swal("Error", "Error guardando datos", "error");
   }
 </script>
 <!-- value={{respuesta.proveedor.0.razon_social}}  -->
