@@ -42,7 +42,7 @@ class ProductoView(View):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
-    def get(self, request, id=0):
+    def get(id=0):
         if (id > 0):
             products = list(Producto.objects.filter(id_producto=id).values())
             if len(products) > 0:
@@ -56,6 +56,7 @@ class ProductoView(View):
             else:
                 datos = {'message': "No existen Productos"}
 
+        
         return JsonResponse(datos)
 
     def post(request):
@@ -69,16 +70,14 @@ class ProductoView(View):
         datos = {'message': "Success"}
         return JsonResponse(datos)
 
-    def put(self, request, id):
-        jd = json.loads(request.body)
+    def put(producto, id):
+        jd = producto
         products = list(Producto.objects.filter(id_producto=id).values())
         if len(products) > 0:
             product = Producto.objects.get(id_producto=id)
             product.nombre_producto = jd['nombre_producto']
             product.valor_compra = jd['valor_compra']
             product.valor_venta = jd['valor_venta']
-            product.valor_ganancia = jd['valor_ganancia']
-            product.stock = jd['stock']
             product.estado = jd['estado']
             product.save()
             datos = {'message': "Success"}

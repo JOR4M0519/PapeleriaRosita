@@ -11,7 +11,7 @@
 {% block content %}
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>  
-  let alerta = "{{message}}"
+  let alerta = "{{result}}"
   if(alerta == "Success"){
     swal("Éxitoso", "El producto se ha creado", "success");
   }else if (alerta == "Error"){
@@ -23,7 +23,7 @@
               <div class="card">
                 <div class="card-header card-header-primary">
                   <h4 class="card-title">{{encabezado}}</h4>
-                  <p class="card-category">Completa el formulario para crear un producto</p>
+                  <p class="card-category">Completa el formulario</p>
                 </div>
                 <div class="card-body">
                   
@@ -33,25 +33,50 @@
                       <div class="col-md-12">
                         <div class="form-group">
                           <label class="bmd-label-floating">Nombre del Producto</label>
-                          <input required type="text" name="nombre_producto" class="form-control">
+                          <input required type="text" name="nombre_producto" value="{{producto.product.nombre_producto}}" class="form-control">
                         </div>
                       </div>
                     </div>
                     <div class="row">
+
+                      {% if action == "UPDATE" %}
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">Estado</label>
+                          <select class="form-select" name="estado" aria-label="Default select example">
+                            {% if producto.product.estado == "A" %}
+                            <option value="{{producto.product.estado}}" selected>Activo</option>
+                            <option value="I">Inactivo</option>
+                            {% else %}
+                            <option value="{{producto.product.estado}}" selected>Inactivo</option>
+                            <option value="A">Activo</option>
+                            {% endif %}
+                          </select>
+                        </div>
+                      </div>
+                      {% endif %}
+
                       <div class="col-md-4">
                         <div class="form-group">
                           <label class="bmd-label-floating">Valor Compra</label>
-                          <input required type="text" name="valor_compra" class="form-control">
+                          <input required type="text" name="valor_compra" value="{{producto.product.valor_compra}}" class="form-control">
                         </div>
                       </div>
                       <div class="col-md-4">
                         <div class="form-group">
                           <label class="bmd-label-floating">Valor Venta</label>
-                          <input required type="text" name="valor_venta" class="form-control">
+                          <input required type="text" name="valor_venta" value="{{producto.product.valor_venta}}" class="form-control">
                         </div>
                       </div>
+                      
                     </div>
+                    {% if action == "GET" %}
                     <button type="submit" class="btn btn-primary pull-right">Crear producto</button>
+                    {% else %}
+                    <input hidden type="text" name="id_producto" value="{{producto.product.id_producto}}" value="1">
+                    <button type="submit" name="page_product_edit_button" value="" class="btn btn-primary pull-right">Editar producto</button>
+                    {% endif %}
+                    
                     <div class="clearfix"></div>
                   </form>
                 </div>
