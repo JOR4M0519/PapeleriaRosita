@@ -12,11 +12,17 @@
             <input type="date" autocomplete="off" name="fecha_final" required>
 
         </div>
-        <div style="position: relative; margin-right: 4%;" class="form-group">
-            <input type="checkbox" name="filtrar_por" id="check">     
-            <label for="check">&nbsp;&nbsp;Filtrar por {{ label_filtro }}</label>
+        <div style="position: relative; margin-right: 4%; width: 16%;" class="form-group">
+            <input style="width: 100%;" type="text" name="razon_social" class="form-control" data-toggle="modal" data-target="#myModal" placeholder="Selección de un proveedor" readonly>    
         </div>
         <button type="submit" class="btn btn-outline-primary btn-sm" name="boton_filtro" value="."><i class="material-icons">book</i>&nbsp;Generar reporte</button>
+
+        <div id="myModal" class="modal fade" role="dialog">
+            {% include 'includes/popups.html' %}
+        </div>
+
+        
+
     </form>
 
 </div>

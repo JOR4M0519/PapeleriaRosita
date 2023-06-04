@@ -8,7 +8,7 @@
 {% block content %}
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>  
-  let alerta = "{{message}}"
+  let alerta = "{{result}}"
   if(alerta == "Success"){
     swal("Éxitoso", "El producto se ha creado", "success");
   }else if (alerta == "Error"){

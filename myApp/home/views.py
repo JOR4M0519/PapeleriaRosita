@@ -30,45 +30,56 @@ def pages(request):
         load_template = request.path.split('/')[-1]
 
         if request.method == 'GET':
+            
             #ADMIN
             if load_template == 'admin':
                 return HttpResponseRedirect(reverse('admin:index'))
-
+            
+            context['action'] = 'GET'
+            context['result'] = ''
             context['segment'] = load_template
             context ['rol']= 'administrador'
             html_template = loader.get_template('home/' + load_template)
 
+            if load_template == 'page-user.html':
+                html_template = loader.get_template('home/' + load_template)
+                #views.UsuarioView.get
+
+                return HttpResponse(html_template.render(context,request))
+
             #Productos
             if load_template == 'page-crte-product.html':
-                context['message'] = ''
                 context['encabezado'] = 'Agregar producto'
                 return HttpResponse(html_template.render(context,request))
             
             #Proveedores
             elif load_template == 'page-crte-proveedores.html':
-                context['message'] = ''
                 context['encabezado'] = 'Agregar Proveedor'
                 return HttpResponse(html_template.render(context,request))
 
             #Compras
             elif load_template == 'page-crte-compras.html':
-                context['message'] = ''
                 context['encabezado'] = 'Registrar Compra'
                 return HttpResponse(html_template.render(context,request))
             
             #Ventas
             elif load_template == 'page-crte-ventas.html':
-                context['message'] = ''
                 context['encabezado'] = 'Registrar Venta'
                 return HttpResponse(html_template.render(context,request))
             
             elif load_template == 'tables-compras.html':
                 context['titulo_tabla'] = 'Compras'
                 context['subtitulo_tabla'] = 'Lista detallada de compras realizadas'
+                #Lista de JSON Ras - Mantener nombres de claves para que se haga la lista en el HTLM
+                context['columnas'] = ['Nombre del producto','Nombre del proveedor','Cantidad comprada','Fecha']
+
+                context['columnas_popu_provee'] = ['Razón social','Teléfono']
+                
+                context['lista_popu_provee'] = [{'id':1,'razon_social':'Cocada','telefono':'El mono'},{'id':2,'razon_social':'Shampoo','telefono':'La caspa'},{'id':3,'razon_social':'Cocada','telefono':'El mono'},{'id':4,'razon_social':'Shampoo','telefono':'La caspa'}]
                 filtros = {
                     'id_proveedor': 0,
-                    'fecha_inicio': '2023-06-30',
-                    'fecha_final': '2023-01-30'
+                    'fecha_inicio': '2023-01-30',
+                    'fecha_final': '2023-06-30'
                 }
 
                 context['label_filtro'] = 'proveedores'
@@ -82,6 +93,7 @@ def pages(request):
                 context['titulo_tabla'] = 'Productos'
                 context['subtitulo_tabla'] = 'Lista detallada de los productos existentes en el inventario'
                 #Lista de JSON Ras - Mantener nombres de claves para que se haga la lista en el HTLM
+                context['columnas'] = ['Nombre del producto','Nombre del proveedor','Cantidad comprada','Fecha']
                 context['lista'] = json.loads(views.ProductoView().get(request).content)['products']
                 return HttpResponse(html_template.render(context,request))
 
@@ -94,38 +106,70 @@ def pages(request):
 
             #Productos
           if load_template == 'page-crte-product.html':
+
             producto={'nombre_producto': request.POST['nombre_producto'],
-                      'valor_compra': request.POST['valor_compra'],
-                      'valor_venta': request.POST['valor_venta'],
-                      'valor_ganancia': 0,
-                      'stock': 0,
-                      'estado': 'A'}
-            
+                        'valor_compra': request.POST['valor_compra'],
+                        'valor_venta': request.POST['valor_venta'],
+                        'valor_ganancia': 0,
+                        'stock': 0,
+                        'estado': 'A'}
+           
             message = json.loads(views.ProductoView.post(producto).content)
-            context['message'] = message['message']
+            context['result'] = message['message']
             context['encabezado'] = 'Agregar producto'
+            
             return HttpResponse(html_template.render(context, request))
             
             #Proveedores
           elif load_template == 'page-crte-proveedores.html':
-            proveedor={'razon_social': request.POST['razon_social'],
-                      'email_proveedor': request.POST['email_proveedor'],
-                      'telefono': request.POST['telefono'],
-                      'estado': 'A'}
-            message = json.loads(views.ProveedorView.post(proveedor).content)
-            context['message'] = message['message']
-            context['encabezado'] = 'Agregar Proveedor'
-            return HttpResponse(html_template.render(context, request))  
+            if request.POST.get('id_proveedor')==None:
+                proveedor={'razon_social': request.POST['razon_social'],
+                        'email_proveedor': request.POST['email_proveedor'],
+                        'telefono': request.POST['telefono'],
+                        'estado': 'A'}
+                message = json.loads(views.ProveedorView.post(proveedor).content)
+                context['result'] = message['message']
+                context['encabezado'] = 'Agregar Proveedor'
+                return HttpResponse(html_template.render(context, request))  
+            else:
+                id_proveedor = request.POST.get('id_proveedor')
+                return HttpResponse(html_template.render(context, request))  
 
+            #Compras
           elif load_template == 'tables-compras.html':
 
             if request.POST.get('id_eliminar')!=None:
                 id_eliminar= request.POST.get('id_eliminar')
-                print(id_eliminar)
-            elif request.POST.get('id_editar')!=None:
-                id_editar= request.POST.get('id_editar')
-                print(id_editar)
             
+                
+            elif request.POST.get('id_editar')!=None:
+                
+                id_product= request.POST.get('id_editar')
+                producto = json.loads(views.ProductoView.get(int(id_product)).content)
+                
+                context['result'] = ''
+                context['encabezado'] = 'Editar producto'
+                context['action'] = 'UPDATE'
+                context['producto'] = producto
+                html_template = loader.get_template('home/page-crte-product.html')
+                return HttpResponse(html_template.render(context,request))
+            
+            elif request.POST.get('page_product_edit_button')!=None:
+                
+                id_producto = request.POST.get('id_producto')
+                producto={'nombre_producto': request.POST['nombre_producto'],
+                            'valor_compra': request.POST['valor_compra'],
+                            'valor_venta': request.POST['valor_venta'],
+                            'estado': request.POST['estado']}
+                
+                message = json.loads(views.ProductoView.put(producto,id_producto).content)
+                print(message)
+                #??
+                #context['result'] = message['message']
+                return HttpResponse(html_template.render(context, request))
+            
+            elif request.POST.get('boton_filtro')!=None:
+                print('Generar reporte seleccionado')
             return redirect(load_template)
 
     except template.TemplateDoesNotExist:

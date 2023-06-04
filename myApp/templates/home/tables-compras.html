@@ -19,22 +19,11 @@
         <div class="table-responsive">
           <table class="table">
             <thead class=" text-primary">
-              <th>
-                Nombre del producto
-              </th>
-              <th>
-                Nombre del proveedor
-              </th>
-              <th>
-                Cantidad comprada
-              </th>
-              <th>
-                Fecha
-              </th>
-              <th>
-              </th>
-              <th>
-              </th>
+              {% for y in columnas %}
+                <th>
+                  {{ y }}
+                </th>
+              {% endfor %}
             </thead>
             <tbody>
             <form action="" method="post">
@@ -69,7 +58,9 @@
     </div>
   </div>
 </div>
+<script>
 
+</script>
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
