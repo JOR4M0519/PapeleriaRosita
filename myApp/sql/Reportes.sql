@@ -9,6 +9,7 @@ BEGIN
                (SELECT razon_social FROM proveedor WHERE proveedor.id_proveedor = detalles_compra.id_proveedor)
         FROM detalles_compra
         WHERE detalles_compra.fecha BETWEEN fecha_inicial AND fecha_final
+		ORDER BY fecha DESC, id_detcompra
     ) t;
 END;
 $$ LANGUAGE plpgsql;
@@ -23,6 +24,7 @@ BEGIN
                (SELECT razon_social FROM proveedor WHERE proveedor.id_proveedor = detalles_compra.id_proveedor)
         FROM detalles_compra
         WHERE detalles_compra.id_proveedor = idProveedor AND detalles_compra.fecha BETWEEN fecha_inicial AND fecha_final
+		ORDER BY fecha DESC, id_detcompra
     ) t;
 END;
 $$ LANGUAGE plpgsql;
@@ -38,6 +40,7 @@ BEGIN
                (SELECT nombre_producto FROM producto WHERE producto.id_producto = detalles_venta.id_producto)
         FROM detalles_venta
         WHERE detalles_venta.fecha BETWEEN fecha_inicial AND fecha_final
+		ORDER BY fecha DESC, id_detventa
     ) t;
 END;
 $$ LANGUAGE plpgsql;
@@ -51,6 +54,7 @@ BEGIN
                (SELECT nombre_producto FROM producto WHERE producto.id_producto = detalles_venta.id_producto)
         FROM detalles_venta
         WHERE detalles_venta.id_producto = idProducto AND detalles_venta.fecha BETWEEN fecha_inicial AND fecha_final
+		ORDER BY fecha DESC, id_detventa
     ) t;
 END;
 $$ LANGUAGE plpgsql;

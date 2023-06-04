@@ -11,8 +11,8 @@ from .forms import LoginForm, SignUpForm
 from .. import views
 
 def login_view(request):
-    form = LoginForm(request.POST or None)
 
+    form = LoginForm(request.POST or None)
     msg = None
 
     if request.method == "POST":
@@ -57,37 +57,3 @@ def register_user(request):
         form = SignUpForm()
 
     return render(request, "accounts/register.html", {"form": form, "msg": msg, "success": success})
-
-def register_user2(request):
-    msg = None
-    success = False
-    if request.method == "GET":
-        return render(request, "accounts/register.html")
-    else:
-        usuario={'nombre_producto': request.POST['password1'],
-            'valor_compra': request.POST['valor_compra'],
-            'valor_venta': request.POST['valor_venta'],
-            'valor_ganancia': 0,
-            'stock': 0,
-            'estado': 'A'}
-
-        return render(request, "accounts/register.html")
-    # if request.method == "POST":
-        
-    #     if form.is_valid():
-    #         form.save()
-    #         username = form.cleaned_data.get("username")
-    #         raw_password = form.cleaned_data.get("password1")
-    #         user = authenticate(username=username, password=raw_password)
-
-    #         msg = 'Usuario creado - please <a href="/login">login</a>.'
-    #         success = True
-
-    #         return redirect("/login/")
-
-    #     else:
-    #         msg = 'Error en los campos digitados'
-    # else:
-    #     form = SignUpForm()
-
-    
