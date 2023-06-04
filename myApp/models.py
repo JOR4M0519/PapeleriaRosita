@@ -39,24 +39,24 @@ from django.db import models
 #         unique_together = (('content_type', 'codename'),)
 
 
-# class AuthUser(models.Model):
-#     password = models.CharField(max_length=128)
-#     last_login = models.DateTimeField(blank=True, null=True)
-#     is_superuser = models.BooleanField()
-#     username = models.CharField(unique=True, max_length=150)
-#     first_name = models.CharField(max_length=150)
-#     last_name = models.CharField(max_length=150)
-#     email = models.CharField(max_length=254)
-#     is_staff = models.BooleanField()
-#     is_active = models.BooleanField()
-#     date_joined = models.DateTimeField()
+class AuthUser(models.Model):
+    password = models.CharField(max_length=128)
+    last_login = models.DateTimeField(blank=True, null=True)
+    is_superuser = models.BooleanField()
+    username = models.CharField(unique=True, max_length=150)
+    first_name = models.CharField(max_length=150)
+    last_name = models.CharField(max_length=150)
+    email = models.CharField(max_length=254)
+    is_staff = models.BooleanField()
+    is_active = models.BooleanField()
+    date_joined = models.DateTimeField()
 
-#     def __str__(self):
-#         return self.username
+    def __str__(self):
+        return self.username
 
-#     class Meta:
-#         managed = False
-#         db_table = 'auth_user'
+    class Meta:
+        managed = False
+        db_table = 'auth_user'
 
 
 # class AuthUserGroups(models.Model):
@@ -128,18 +128,8 @@ from django.db import models
 
 class DetallesCompra(models.Model):
     id_detcompra = models.AutoField(primary_key=True)
-<<<<<<< HEAD
     id_producto = models.ForeignKey('Producto', models.DO_NOTHING, db_column='id_producto',default=0)
     id_proveedor = models.ForeignKey('Proveedor', models.DO_NOTHING, db_column='id_proveedor',default=0)
-=======
-<<<<<<< Updated upstream
-    id_producto = models.ForeignKey('Producto', models.DO_NOTHING, db_column='id_producto')
-    id_proveedor = models.ForeignKey('Proveedor', models.DO_NOTHING, db_column='id_proveedor')
-=======
-    id_producto = models.ForeignKey('producto', models.DO_NOTHING, db_column='id_producto')
-    id_proveedor = models.ForeignKey('proveedor', models.DO_NOTHING, db_column='id_proveedor')
->>>>>>> Stashed changes
->>>>>>> 95cb9ed8fc4d553f9cf390dc6f53a0498b442582
     cantidad = models.IntegerField()
     fecha = models.DateField()
 
@@ -150,15 +140,7 @@ class DetallesCompra(models.Model):
 
 class DetallesVenta(models.Model):
     id_detventa = models.AutoField(primary_key=True)
-<<<<<<< HEAD
     id_producto = models.ForeignKey('Producto', models.DO_NOTHING, db_column='id_producto',default=0)
-=======
-<<<<<<< Updated upstream
-    id_producto = models.ForeignKey('Producto', models.DO_NOTHING, db_column='id_producto')
-=======
-    id_producto = models.ForeignKey('producto', models.DO_NOTHING, db_column='id_producto')
->>>>>>> Stashed changes
->>>>>>> 95cb9ed8fc4d553f9cf390dc6f53a0498b442582
     cantidad = models.IntegerField()
     fecha = models.DateField(auto_now_add=True)
 
