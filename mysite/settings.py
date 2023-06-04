@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'bootstrap5', #No se
     'myApp.home',
     'rest_framework',
+    'bootstrap_daterangepicker',
 ]
 
 MIDDLEWARE = [
