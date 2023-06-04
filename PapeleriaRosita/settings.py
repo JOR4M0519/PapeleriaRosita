@@ -37,8 +37,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+<<<<<<< Updated upstream:PapeleriaRosita/settings.py
     'myApp',
     'rest_framework'
+=======
+    'bootstrap5', #No se
+    'myApp.home',
+    'rest_framework',
+    'myApp',
+>>>>>>> Stashed changes:mysite/settings.py
 ]
 
 MIDDLEWARE = [
@@ -80,7 +87,11 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'PapeleriaRosita',
         'USER': 'postgres',
+<<<<<<< Updated upstream:PapeleriaRosita/settings.py
         'PASSWORD': '',
+=======
+        'PASSWORD': '123456',
+>>>>>>> Stashed changes:mysite/settings.py
         'HOST': 'localhost',
         'DATABASE_PORT': '5432',
     }
