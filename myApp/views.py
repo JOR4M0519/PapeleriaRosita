@@ -252,8 +252,8 @@ class DetalleCompraView(View):
             datos = {'message': "Detalle no Encontrado"}
         return JsonResponse(datos)
 
-    def delete(self, request, id):
-        details = list(DetallesVenta.objects.filter(id_detcompra=id).values())
+    def delete(request, id):
+        details = list(DetallesCompra.objects.filter(id_detcompra=id).values())
         if len(details) > 0:
             DetallesCompra.objects.filter(id_detcompra=id).delete()
             datos = {'message': "Success"}

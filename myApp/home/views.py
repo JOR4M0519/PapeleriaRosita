@@ -257,7 +257,7 @@ def pages(request):
             elif load_template == 'tables-compras.html':
                 #Eliminar
                 if request.POST.get('id_eliminar')!=None:
-                    id_eliminar= request.POST.get('id_eliminar')
+                    views.DetalleCompraView.delete(request,id=request.POST.get('id_eliminar'))
                 #Editar
                 elif request.POST.get('id_editar')!=None:
                     
