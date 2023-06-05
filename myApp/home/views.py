@@ -62,6 +62,15 @@ def pages(request):
                 return HttpResponse(html_template.render(context,request))
 
             #Proveedores
+            elif load_template == 'tables-proveedores.html':
+                context['titulo_tabla'] = 'Proveedor'
+                context['subtitulo_tabla'] = 'Lista detallada de los proveedores existentes en el sistema'
+                #Lista de JSON Ras - Mantener nombres de claves para que se haga la lista en el HTLM
+                context['columnas'] = ['Razón social','Email','Teléfono','Estado']
+                context['lista'] = json.loads(views.ProveedorView().get(request).content)['provider']
+                return HttpResponse(html_template.render(context,request))
+
+
             elif load_template == 'page-crte-proveedores.html':
                 context['encabezado'] = 'Agregar Proveedor'
                 return HttpResponse(html_template.render(context,request))
@@ -104,6 +113,21 @@ def pages(request):
                 #Lista de JSON Ras - Mantener nombres de claves para que se haga la lista en el HTLM
                 context['columnas'] = ['Nombre del producto','Valor compra','Valor venta','Valor ganancia','Cantidad comprada','Estado']
                 context['lista'] = json.loads(views.ProductoView().get(request).content)['products']
+                return HttpResponse(html_template.render(context,request))
+
+            elif load_template == 'tables-ventas.html':
+                context['titulo_tabla'] = 'Ventas'
+                context['subtitulo_tabla'] = 'Lista detallada de ventas realizadas'
+                #Lista de JSON Ras - Mantener nombres de claves para que se haga la lista en el HTLM
+                context['columnas'] = ['Nombre del producto','Cantidad vendida','Fecha']
+
+                context['columnas_popu_provee'] = ['Razón social','Teléfono']
+                
+                context['lista_popu_provee'] = json.loads(views.ProveedorView().get(request).content)['provider']
+
+
+                #Lista de JSON Ras - Mantener nombres de claves para que se haga la lista en el HTLM
+                context['lista'] = [{'id_detventa':5,'nombre_producto': 'Peras','cantidad':100,'fecha':'3/6/2030'},{'id_detventa':10,'nombre_producto': 'piojos','cantidad':10000,'fecha':'3/6/2030'}]
                 return HttpResponse(html_template.render(context,request))
 
             return HttpResponse(html_template.render(context, request))
