@@ -33,8 +33,8 @@
                       <div class="col-md-12">
                         <div class="form-group">
                           <label class="bmd-label-floating">Nombre del Producto</label>
-                          <input required type="text" name="nombre_producto" class="form-control" data-toggle="modal" data-target="#myModal" readonly>
-                          <input required type="number" name="id_producto" value="" class="form-control">
+                          <input required type="text" value="{{producto.product.nombre_producto}}" name="nombre_producto" class="form-control" data-toggle="modal" data-target="#myModal" readonly>
+                          <input hidden required type="number" name="id_producto" value="{{detventa.detail.id_producto_id}}" class="form-control">
                         </div>
                       </div>
                     </div>
@@ -42,11 +42,19 @@
                       <div class="col-md-12">
                         <div class="form-group">
                           <label class="bmd-label-floating">Cantidad</label>
-                          <input required type="number" name="cantidad" class="form-control">
+                          <input required type="number" value="{{detventa.detail.cantidad}}" name="cantidad" class="form-control">
                         </div>
                       </div>
                     </div>
-                    <button type="submit" class="btn btn-primary pull-right">Crear producto</button>
+                    {% if action == "GET" %}
+                    <button type="submit" class="btn btn-primary pull-right">Crear Venta</button>
+                    {% else %}
+                    <input type="text" hidden name="fecha" value="{{detventa.detail.fecha}}">
+                    <input type="text" hidden name="id_detVenta" value="{{detventa.detail.id_detventa}}">
+                    <button name="page_ventas_edit_button" type="submit" class="btn btn-primary pull-right">Editar Venta</button>
+                    {% endif %}
+                    
+                    
                     <div class="clearfix"></div>
                   </form>
                 </div>
