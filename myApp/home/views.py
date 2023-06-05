@@ -261,23 +261,23 @@ def pages(request):
                 #Editar
                 elif request.POST.get('id_editar')!=None:
                     
-                    id_product= request.POST.get('id_editar')
-                    producto = json.loads(views.DetalleCompraView.get(int(id_product)).content)
+                    id_detCompra= request.POST.get('id_editar')
+                    det_compra = json.loads(views.DetalleCompraView.get(views,request,id=int(id_detCompra)).content)
                     
                     context['result'] = ''
-                    context['encabezado'] = 'Editar producto'
+                    context['encabezado'] = 'Correción compra'
                     context['action'] = 'UPDATE'
-                    context['producto'] = producto
-                    html_template = loader.get_template('home/page-crte-product.html')
+                    context['det_compra'] = det_compra
+                    html_template = loader.get_template('home/page-crte-compras.html')
                     return HttpResponse(html_template.render(context,request))
                 #Redirección para editar
-                elif request.POST.get('page_product_edit_button')!=None:
+                elif request.POST.get('page_compras_edit_button')!=None:
                     
-                    id_producto = request.POST.get('id_producto')
-                    producto={'nombre_producto': request.POST['nombre_producto'],
-                                'valor_compra': request.POST['valor_compra'],
-                                'valor_venta': request.POST['valor_venta'],
-                                'estado': request.POST['estado']}
+                    id_producto = request.POST.get('id_detcompra')
+                    producto={'id_producto': request.POST['id_producto'],
+                                'id_proveedor': request.POST['id_proveedor'],
+                                'cantidad': request.POST['cantidad'],
+                                'fecha': request.POST['fecha']}
                     
                     message = json.loads(views.ProductoView.put(producto,id_producto).content)           
                     return HttpResponse(html_template.render(context, request))
