@@ -18,7 +18,12 @@
         <button type="submit" class="btn btn-outline-primary btn-sm" name="boton_filtro" value="."><i class="material-icons">book</i>&nbsp;Generar reporte</button>
 
         <div id="myModal" class="modal fade" role="dialog">
-            {% include 'includes/popups.html' %}
+            {% if 'tables-ventas' in segment %} 
+                {% include 'includes/popups-producto.html' %}
+            {% else %}
+                {% include 'includes/popups-proveedor.html' %}
+            {% endif %}
+            
         </div>
 
         

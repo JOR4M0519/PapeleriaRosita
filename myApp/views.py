@@ -240,7 +240,7 @@ class DetalleCompraView(View):
         return JsonResponse(datos)
 
     def post(request):
-        jd = json.loads(request.body)
+        jd = (request)
         DetallesCompra.objects.create(id_producto_id=jd['id_producto'],
                                       id_proveedor_id=jd['id_proveedor'],
                                       cantidad=jd['cantidad'],
@@ -309,7 +309,7 @@ class DetalleVentaView(View):
         return JsonResponse(datos)
 
     def post(request):
-        jd = json.loads(request.body)
+        jd = (request)
         DetallesVenta.objects.create(id_producto_id=jd['id_producto'],
                                      cantidad=jd['cantidad'],
                                      fecha=jd['fecha'])
