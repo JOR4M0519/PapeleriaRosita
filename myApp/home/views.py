@@ -16,10 +16,15 @@ from django.shortcuts import redirect
 @login_required(login_url="/login/")
 def index(request):
     context = {}
-    context ['segment']= 'index'
+    context ['segment']= 'tables-productos'
+    context['titulo_tabla'] = 'Productos'
     context ['rol']= 'administrador'
-    html_template = loader.get_template('home/index.html')
-    return HttpResponse(html_template.render(context, request))
+    context['subtitulo_tabla'] = 'Lista detallada de los productos existentes en el inventario'
+                #Lista de JSON Ras - Mantener nombres de claves para que se haga la lista en el HTLM
+    context['columnas'] = ['Nombre del producto','Nombre del proveedor','Cantidad comprada','Fecha','Inventario','Estado']
+    context['lista'] = json.loads(views.ProductoView().get(request).content)['products']
+    html_template = loader.get_template('home/tables-productos.html')
+    return HttpResponse(html_template.render(context,request))
 
 @login_required(login_url="/login/")
 def pages(request):
