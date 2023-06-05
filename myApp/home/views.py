@@ -305,6 +305,49 @@ def pages(request):
                     context['lista'] = json.loads(views.DetalleCompraView().get(filtros).content)
                     return HttpResponse(html_template.render(context, request))
         
+
+            #**********
+            #**Ventas**
+            #**********
+            if load_template == 'page-crte-ventas.html':
+            
+                date = datetime.now()
+                date = date.strftime("%Y-%m-%d")
+
+                venta={    'cantidad': request.POST['cantidad'],
+                            'id_producto': request.POST['id_producto'],
+                            'fecha': date}
+                message = json.loads(views.DetalleVentaView.post(venta).content)
+                context['result'] = message['message']
+                context['encabezado'] = 'Registrar Venta'
+                return HttpResponse(html_template.render(context, request))
+            elif load_template == 'tables-ventas.html':
+                #Eliminar
+                if request.POST.get('id_eliminar')!=None:
+                    id_eliminar= request.POST.get('id_eliminar')
+                #Editar
+                elif request.POST.get('id_editar')!=None:
+                    
+                    id_detVenta= request.POST.get('id_editar')
+                    det_venta = json.loads(views.DetallesVenta.get(views,request,id=int(id_detVenta)).content)
+                    
+                    context['result'] = ''
+                    context['encabezado'] = 'Correción compra'
+                    context['action'] = 'UPDATE'
+                    context['det_venta'] = det_venta
+                    html_template = loader.get_template('home/page-crte-ventas.html')
+                    return HttpResponse(html_template.render(context,request))
+                #Redirección para editar
+                elif request.POST.get('page_ventas_edit_button')!=None:
+                    
+                    id_producto = request.POST.get('id_detVenta')
+                    producto={'id_producto': request.POST['id_producto'],
+                                'cantidad': request.POST['cantidad'],
+                                'fecha': request.POST['fecha']}
+                    
+                    message = json.loads(views.ProductoView.put(producto,id_producto).content)           
+                    return HttpResponse(html_template.render(context, request))
+
             #ELIMINAR PROBABLMENTE
             elif request.POST.get('page_product_edit_button')!=None:
                 
