@@ -236,12 +236,14 @@ class DetalleCompraView(View):
         return JsonResponse(datos)
 
     def put(request, id):
-        jd = json.loads(request.body)
+        jd = (request)
+        
         details = list(DetallesCompra.objects.filter(id_detcompra=id).values())
         if len(details) > 0:
             detail = DetallesCompra.objects.get(id_detcompra=id)
-            detail.id_producto = jd['id_producto']
-            detail.id_proveedor = jd['id_proveedor']
+            print(jd['id_producto'])
+            detail.id_producto = Producto.objects.get(id_producto=jd['id_producto'])
+            detail.id_proveedor = Proveedor.objects.get(id_proveedor=jd['id_proveedor'])
             detail.cantidad = jd['cantidad']
             detail.fecha = jd['fecha']
             detail.save()
