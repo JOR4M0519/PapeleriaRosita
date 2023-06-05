@@ -6,9 +6,10 @@ Copyright (c) 2019 - present AppSeed.us
 # Create your views here.
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, get_user_model 
 from .forms import LoginForm, SignUpForm
 from .. import views
+
 
 def login_view(request):
 
@@ -18,11 +19,14 @@ def login_view(request):
     if request.method == "POST":
 
         if form.is_valid():
+
             username = form.cleaned_data.get("username")
             password = form.cleaned_data.get("password")
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
+                User = get_user_model()
+                print(User)
                 return redirect("/")
             else:
                 msg = 'Credenciales invalidas'
