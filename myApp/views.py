@@ -279,7 +279,7 @@ class DetalleVentaView(View):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
-    def get(self, request, id=0):
+    def get(self, request):
         try:
             ps_connection = psycopg2.connect(user="postgres",
                                              password=DATABASES['default']['PASSWORD'],
@@ -287,10 +287,10 @@ class DetalleVentaView(View):
                                              port="5432",
                                              database=DATABASES['default']['NAME'])
             cursor = ps_connection.cursor()
-            if request['id_producto'] == 0:
+            if request['id_producto'] == '':
                 cursor.callproc('fn_reporteventa', [request['fecha_inicio'], request['fecha_final']])
             else:
-                cursor.callproc('fn_reporteventaproducto', [request['id_proveedor'], request['fecha_inicio'], request['fecha_final']])
+                cursor.callproc('fn_reporteventaproducto', [request['id_producto'], request['fecha_inicio'], request['fecha_final']])
             result = cursor.fetchone()
             if result[0] is not None:
                 datos = {'message': 'Success', 'details': result[0]}
