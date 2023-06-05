@@ -211,31 +211,18 @@ class DetalleCompraView(View):
         return super().dispatch(request, *args, **kwargs)
 
     def get(self,request):
-        try:
-            ps_connection = psycopg2.connect(user="postgres",
-                                             password=DATABASES['default']['PASSWORD'],
-                                             host="localhost",
-                                             port="5432",
-                                             database=DATABASES['default']['NAME'])
-            cursor = ps_connection.cursor()
-            if request['id_proveedor'] == '':
-                cursor.callproc('fn_reportecompra', [request['fecha_inicio'],request['fecha_final']])
+        if (id > 0):
+            details = list(DetallesCompra.objects.filter(id_detcompra=id).values())
+            if len(details) > 0:
+                datos = {'message': "Success", 'detail': details[0]}
             else:
-                cursor.callproc('fn_reportecompraproveedor', [request['id_proveedor'],request['fecha_inicio'],request['fecha_final']])
-            result = cursor.fetchone()
-            if result[0] is not None:
-                datos = {'message': 'Success', 'details': result[0]}
+                datos = {'message': "Detalle no Encontrado"}
+        else:
+            details = list(DetallesCompra.objects.values())
+            if len(details) > 0:
+                datos = {'message': "Success", 'details': details}
             else:
-                datos = {'message': 'No se encontro ningun detalle'}
-
-        except (Exception, psycopg2.DatabaseError) as error:
-            print("Error while connecting to PostgreSQL", error)
-
-        finally:
-            # closing database connection.
-            if ps_connection:
-                cursor.close()
-                ps_connection.close()
+                datos = {'message': "No existen Detalles"}
 
         return JsonResponse(datos)
 
@@ -280,31 +267,18 @@ class DetalleVentaView(View):
         return super().dispatch(request, *args, **kwargs)
 
     def get(self, request):
-        try:
-            ps_connection = psycopg2.connect(user="postgres",
-                                             password=DATABASES['default']['PASSWORD'],
-                                             host="localhost",
-                                             port="5432",
-                                             database=DATABASES['default']['NAME'])
-            cursor = ps_connection.cursor()
-            if request['id_producto'] == '':
-                cursor.callproc('fn_reporteventa', [request['fecha_inicio'], request['fecha_final']])
+        if (id > 0):
+            details = list(DetallesVenta.objects.filter(id_detventa=id).values())
+            if len(details) > 0:
+                datos = {'message': "Success", 'detail': details[0]}
             else:
-                cursor.callproc('fn_reporteventaproducto', [request['id_producto'], request['fecha_inicio'], request['fecha_final']])
-            result = cursor.fetchone()
-            if result[0] is not None:
-                datos = {'message': 'Success', 'details': result[0]}
+                datos = {'message': "Detalle no Encontrado"}
+        else:
+            details = list(DetallesVenta.objects.values())
+            if len(details) > 0:
+                datos = {'message': "Success", 'details': details}
             else:
-                datos = {'message': 'No se encontro ningun detalle'}
-
-        except (Exception, psycopg2.DatabaseError) as error:
-            print("Error while connecting to PostgreSQL", error)
-
-        finally:
-            # closing database connection.
-            if ps_connection:
-                cursor.close()
-                ps_connection.close()
+                datos = {'message': "No existen Detalles"}
 
         return JsonResponse(datos)
 
@@ -347,62 +321,31 @@ class ReporteVentaView(View):
         return super().dispatch(request, *args, **kwargs)
 
     def get(self, request):
-        jd = json.loads(request.body)
-        if jd['id_producto'] == 0 and jd['fechaI'] == "0" and jd['fechaF'] == "0":
-            details = list(DetallesVenta.objects.values())
-            if len(details) > 0:
-                datos = {'message': "Success", 'details': details}
+        try:
+            ps_connection = psycopg2.connect(user="postgres",
+                                             password=DATABASES['default']['PASSWORD'],
+                                             host="localhost",
+                                             port="5432",
+                                             database=DATABASES['default']['NAME'])
+            cursor = ps_connection.cursor()
+            if request['id_producto'] == '':
+                cursor.callproc('fn_reporteventa', [request['fecha_inicio'], request['fecha_final']])
             else:
-                datos = {'message': "No existen Detalles"}
-        elif jd['fechaI'] == "0000-00-00" and jd['fechaF'] == "0000-00-00":
-            details = list(
-                DetallesVenta.objects.filter(id_producto=jd['id_producto']).values())
-            if len(details) > 0:
-                datos = {'message': "Success", 'details': details}
+                cursor.callproc('fn_reporteventaproducto', [request['id_producto'], request['fecha_inicio'], request['fecha_final']])
+            result = cursor.fetchone()
+            if result[0] is not None:
+                datos = {'message': 'Success', 'details': result[0]}
             else:
-                datos = {'message': "Detalle no Encontrado"}
-        elif jd['id_producto'] == 0 and jd['fechaF'] == "0":
-            details = list(
-                DetallesVenta.objects.filter(fecha__gte=jd['fechaI']).values())
-            if len(details) > 0:
-                datos = {'message': "Success", 'details': details}
-            else:
-                datos = {'message': "Detalle no Encontrado"}
-        elif jd['id_producto'] == 0 and jd['fechaI'] == "0":
-            details = list(
-                DetallesVenta.objects.filter(fecha__lte=jd['fechaF']).values())
-            if len(details) > 0:
-                datos = {'message': "Success", 'details': details}
-            else:
-                datos = {'message': "Detalle no Encontrado"}
-        elif jd['fechaF'] == "0":
-            details = list(
-                DetallesVenta.objects.filter(id_producto=jd['id_producto'], fecha__gte=jd['fechaI']).values())
-            if len(details) > 0:
-                datos = {'message': "Success", 'details': details}
-            else:
-                datos = {'message': "Detalle no Encontrado"}
-        elif jd['fechaI'] == "0":
-            details = list(
-                DetallesVenta.objects.filter(id_producto=jd['id_producto'], fecha__lte=jd['fechaF']).values())
-            if len(details) > 0:
-                datos = {'message': "Success", 'details': details}
-            else:
-                datos = {'message': "Detalle no Encontrado"}
-        elif jd['id_producto'] == 0:
-            details = list(
-                DetallesVenta.objects.filter(fecha__gte=jd['fechaI'], fecha__lte=jd['fechaF']).values())
-            if len(details) > 0:
-                datos = {'message': "Success", 'details': details}
-            else:
-                datos = {'message': "Detalle no Encontrado"}
-        else:
-            details = list(
-                DetallesVenta.objects.filter(id_producto=jd['id_producto'], fecha__gte=jd['fechaI'], fecha__lte=jd['fechaF']).values())
-            if len(details) > 0:
-                datos = {'message': "Success", 'details': details}
-            else:
-                datos = {'message': "Detalle no Encontrado"}
+                datos = {'message': 'No se encontro ningun detalle'}
+
+        except (Exception, psycopg2.DatabaseError) as error:
+            print("Error while connecting to PostgreSQL", error)
+
+        finally:
+            # closing database connection.
+            if ps_connection:
+                cursor.close()
+                ps_connection.close()
 
         return JsonResponse(datos)
 
@@ -413,109 +356,31 @@ class ReporteCompraView(View):
         return super().dispatch(request, *args, **kwargs)
 
     def get(self, request):
-        jd = json.loads(request.body)
-        if jd['id_producto'] == 0 and jd['id_proveedor'] == 0 and jd['fechaI'] == "0" and jd['fechaF'] == "0":
-            details = list(DetallesCompra.objects.values())
-            if len(details) > 0:
-                datos = {'message': "Success", 'details': details}
+        try:
+            ps_connection = psycopg2.connect(user="postgres",
+                                             password=DATABASES['default']['PASSWORD'],
+                                             host="localhost",
+                                             port="5432",
+                                             database=DATABASES['default']['NAME'])
+            cursor = ps_connection.cursor()
+            if request['id_proveedor'] == '':
+                cursor.callproc('fn_reportecompra', [request['fecha_inicio'], request['fecha_final']])
             else:
-                datos = {'message': "No existen Detalles"}
-        elif jd['id_proveedor'] == 0 and jd['fechaI'] == "0" and jd['fechaF'] == "0":
-            details = list(
-                DetallesCompra.objects.filter(id_producto=jd['id_producto']).values())
-            if len(details) > 0:
-                datos = {'message': "Success", 'details': details}
+                cursor.callproc('fn_reportecompraproveedor',
+                                [request['id_proveedor'], request['fecha_inicio'], request['fecha_final']])
+            result = cursor.fetchone()
+            if result[0] is not None:
+                datos = {'message': 'Success', 'details': result[0]}
             else:
-                datos = {'message': "Detalle no Encontrado"}
-        elif jd['id_producto'] == 0 and jd['fechaI'] == "0" and jd['fechaF'] == "0":
-            details = list(
-                DetallesCompra.objects.filter(id_proveedor=jd['id_proveedor']).values())
-            if len(details) > 0:
-                datos = {'message': "Success", 'details': details}
-            else:
-                datos = {'message': "Detalle no Encontrado"}
-        elif jd['id_producto'] == 0 and jd['id_proveedor'] == 0 and jd['fechaF'] == "0":
-            details = list(
-                DetallesCompra.objects.filter(fecha__gte=jd['fechaI']).values())
-            if len(details) > 0:
-                datos = {'message': "Success", 'details': details}
-            else:
-                datos = {'message': "Detalle no Encontrado"}
-        elif jd['id_producto'] == 0 and jd['id_proveedor'] == 0 and jd['fechaI'] == "0":
-            details = list(
-                DetallesCompra.objects.filter(fecha__lte=jd['fechaF']).values())
-            if len(details) > 0:
-                datos = {'message': "Success", 'details': details}
-            else:
-                datos = {'message': "Detalle no Encontrado"}
-        elif jd['fechaI'] == "0" and jd['fechaF'] == "0":
-            details = list(
-                DetallesCompra.objects.filter(id_producto=jd['id_producto'], id_proveedor=jd['id_proveedor']).values())
-            if len(details) > 0:
-                datos = {'message': "Success", 'details': details}
-            else:
-                datos = {'message': "Detalle no Encontrado"}
-        elif jd['id_proveedor'] == 0 and jd['fechaF'] == "0":
-            details = list(
-                DetallesCompra.objects.filter(id_producto=jd['id_producto'], fecha__gte=jd['fechaI']).values())
-            if len(details) > 0:
-                datos = {'message': "Success", 'details': details}
-            else:
-                datos = {'message': "Detalle no Encontrado"}
-        elif jd['id_proveedor'] == 0 and jd['fechaI'] == "0":
-            details = list(
-                DetallesCompra.objects.filter(id_producto=jd['id_producto'], fecha__lte=jd['fechaF']).values())
-            if len(details) > 0:
-                datos = {'message': "Success", 'details': details}
-            else:
-                datos = {'message': "Detalle no Encontrado"}
-        elif jd['id_producto'] == 0 and jd['fechaF'] == "0":
-            details = list(
-                DetallesCompra.objects.filter(id_proveedor=jd['id_proveedor'], fecha__gte=jd['fechaI']).values())
-            if len(details) > 0:
-                datos = {'message': "Success", 'details': details}
-            else:
-                datos = {'message': "Detalle no Encontrado"}
-        elif jd['id_producto'] == 0 and jd['id_proveedor'] == 0:
-            details = list(
-                DetallesCompra.objects.filter(fecha__gte=jd['fechaI'], fecha__lte=jd['fechaF']).values())
-            if len(details) > 0:
-                datos = {'message': "Success", 'details': details}
-            else:
-                datos = {'message': "Detalle no Encontrado"}
-        elif jd['id_producto'] == 0:
-            details = list(
-                DetallesCompra.objects.filter(id_proveedor=jd['id_proveedor'], fecha__gte=jd['fechaI'], fecha__lte=jd['fechaF']).values())
-            if len(details) > 0:
-                datos = {'message': "Success", 'details': details}
-            else:
-                datos = {'message': "Detalle no Encontrado"}
-        elif jd['id_proveedor'] == 0:
-            details = list(
-                DetallesCompra.objects.filter(id_producto=jd['id_producto'], fecha__gte=jd['fechaI'], fecha__lte=jd['fechaF']).values())
-            if len(details) > 0:
-                datos = {'message': "Success", 'details': details}
-            else:
-                datos = {'message': "Detalle no Encontrado"}
-        elif jd['fechaI'] == "0":
-            details = list(
-                DetallesCompra.objects.filter(id_proveedor=jd['id_proveedor'], id_producto=jd['id_producto'], fecha__lte=jd['fechaF']).values())
-            if len(details) > 0:
-                datos = {'message': "Success", 'details': details}
-            else:
-                datos = {'message': "Detalle no Encontrado"}
-        elif jd['fechaF'] == "0":
-            details = list(
-                DetallesCompra.objects.filter(id_proveedor=jd['id_proveedor'], id_producto=jd['id_producto'], fecha__gte=jd['fechaI']).values())
-            if len(details) > 0:
-                datos = {'message': "Success", 'details': details}
-            else:
-                datos = {'message': "Detalle no Encontrado"}
-        else:
-            details = list(
-                DetallesCompra.objects.filter(id_proveedor=jd['id_proveedor'], id_producto=jd['id_producto'], fecha__gte=jd['fechaI'], fecha__lte=jd['fechaF']).values())
-            if len(details) > 0:
-                datos = {'message': "Success", 'details': details}
-            else:
-                datos = {'message': "Detalle no Encontrado"}
+                datos = {'message': 'No se encontro ningun detalle'}
+
+        except (Exception, psycopg2.DatabaseError) as error:
+            print("Error while connecting to PostgreSQL", error)
+
+        finally:
+            # closing database connection.
+            if ps_connection:
+                cursor.close()
+                ps_connection.close()
+
         return JsonResponse(datos)
