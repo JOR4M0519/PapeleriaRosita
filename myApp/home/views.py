@@ -99,7 +99,7 @@ def pages(request):
                 context['label_filtro'] = 'proveedores'
 
                 #Lista de JSON Ras - Mantener nombres de claves para que se haga la lista en el HTLM
-                context['lista'] = json.loads(views.DetalleCompraView().get(filtros).content)
+                context['lista'] = json.loads(views.ReporteCompraView().get(filtros).content)
                 return HttpResponse(html_template.render(context,request))
 
             #ventas
@@ -133,7 +133,7 @@ def pages(request):
                 }
 
                 #Lista de JSON Ras - Mantener nombres de claves para que se haga la lista en el HTLM
-                context['lista'] = json.loads(views.DetalleVentaView().get(filtros).content)
+                context['lista'] = json.loads(views.ReporteVentaView().get(filtros).content)
                 return HttpResponse(html_template.render(context,request))
 
             return HttpResponse(html_template.render(context, request))
@@ -249,7 +249,7 @@ def pages(request):
                             'id_producto': request.POST['id_producto'],
                             'id_proveedor': request.POST['id_proveedor']}
                 
-                message = json.loads(views.DetalleCompraView.post(compra).content)
+                message = json.loads(views.ReporteCompraView.post(compra).content)
                 context['result'] = message['message']
                 context['encabezado'] = 'Registrar Compra'
                 return HttpResponse(html_template.render(context, request))
@@ -262,7 +262,7 @@ def pages(request):
                 elif request.POST.get('id_editar')!=None:
                     
                     id_detCompra= request.POST.get('id_editar')
-                    det_compra = json.loads(views.DetalleCompraView.get(views,request,id=int(id_detCompra)).content)
+                    det_compra = json.loads(views.ReporteCompraView.get(views,request,id=int(id_detCompra)).content)
                     
                     context['result'] = ''
                     context['encabezado'] = 'Correción compra'
@@ -302,7 +302,7 @@ def pages(request):
                     context['label_filtro'] = 'proveedores'
 
                     # Lista de JSON Ras - Mantener nombres de claves para que se haga la lista en el HTLM
-                    context['lista'] = json.loads(views.DetalleCompraView().get(filtros).content)
+                    context['lista'] = json.loads(views.ReporteCompraView().get(filtros).content)
                     return HttpResponse(html_template.render(context, request))
         
 
@@ -371,17 +371,17 @@ def pages(request):
                 else:
                     print('no')
 
-                context['titulo_tabla'] = 'Compras'
-                context['subtitulo_tabla'] = 'Lista detallada de compras realizadas'
+                context['titulo_tabla'] = 'Ventas'
+                context['subtitulo_tabla'] = 'Lista detallada de ventas realizadas'
                 # Lista de JSON Ras - Mantener nombres de claves para que se haga la lista en el HTLM
-                context['columnas'] = ['Nombre del producto', 'Nombre del proveedor', 'Cantidad comprada', 'Fecha']
+                context['columnas'] = ['Nombre del producto', 'Cantidad Vendida', 'Fecha']
 
                 context['columnas_popu_provee'] = ['Razón social', 'Teléfono']
 
                 context['lista_popu_provee'] = json.loads(views.ProveedorView().get(request).content)['provider']
                 print(request)
                 filtros = {
-                    'id_proveedor': request.POST['razon_social'],
+                    'id_producto': request.POST['razon_social'],
                     'fecha_inicio': request.POST['fecha_inicio'],
                     'fecha_final': request.POST['fecha_final']
                 }
@@ -389,7 +389,7 @@ def pages(request):
                 context['label_filtro'] = 'proveedores'
 
                 # Lista de JSON Ras - Mantener nombres de claves para que se haga la lista en el HTLM
-                context['lista'] = json.loads(views.DetalleCompraView().get(filtros).content)
+                context['lista'] = json.loads(views.ReporteVentaView().get(filtros).content)
                 return HttpResponse(html_template.render(context, request))
             return redirect(load_template,)
 
