@@ -210,7 +210,7 @@ class DetalleCompraView(View):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
-    def get(self,request):
+    def get(self,request,id=0):
         if (id > 0):
             details = list(DetallesCompra.objects.filter(id_detcompra=id).values())
             if len(details) > 0:
@@ -266,7 +266,7 @@ class DetalleVentaView(View):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
-    def get(self, request):
+    def get(self, request,id=0):
         if (id > 0):
             details = list(DetallesVenta.objects.filter(id_detventa=id).values())
             if len(details) > 0:
