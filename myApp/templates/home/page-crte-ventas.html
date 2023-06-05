@@ -10,11 +10,12 @@
 
 {% block content %}
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-<script>
-  let alerta = "{{message}}"
-  if(alerta != null){
-    console.log(alerta)
+<script>  
+  let alerta = "{{result}}"
+  if(alerta == "Success"){
     swal("Éxitoso", "El producto se ha creado", "success");
+  }else if (alerta == "Error"){
+    swal("Error", "Error guardando datos", "error");
   }
 </script>
           <div class="row">
@@ -33,6 +34,7 @@
                         <div class="form-group">
                           <label class="bmd-label-floating">Nombre del Producto</label>
                           <input required type="text" name="nombre_producto" class="form-control" data-toggle="modal" data-target="#myModal" readonly>
+                          <input hidden required type="number" name="id_producto" class="form-control">
                         </div>
                       </div>
                     </div>
@@ -40,7 +42,7 @@
                       <div class="col-md-12">
                         <div class="form-group">
                           <label class="bmd-label-floating">Cantidad</label>
-                          <input required type="number" name="valor_venta" class="form-control">
+                          <input required type="number" name="cantidad" class="form-control">
                         </div>
                       </div>
                     </div>
