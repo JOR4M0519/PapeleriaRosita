@@ -28,7 +28,7 @@
             <tbody>
             <form action="" method="post">
               {% csrf_token %}
-              {% for x in lista %}
+              {% for x in lista.details%}
               <tr>
                 <td class="text-primary">
                   {{ x.nombre_producto }}
