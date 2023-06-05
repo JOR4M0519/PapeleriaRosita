@@ -306,7 +306,7 @@ class DetalleVentaView(View):
             datos = {'message': "Detalle no Encontrado"}
         return JsonResponse(datos)
 
-    def delete(self, request, id):
+    def delete(request, id):
         details = list(DetallesVenta.objects.filter(id_detventa=id).values())
         if len(details) > 0:
             DetallesVenta.objects.filter(id_detventa=id).delete()
