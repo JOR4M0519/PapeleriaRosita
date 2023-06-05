@@ -23,9 +23,10 @@
             </a>
 
           </li>
-          
-          <!-- % if 'administrador' in rol % -->
-          <li class="nav-item {% if 'page-user' in segment %} active {% endif %}">
+
+{#         {% if 'administrador' in rol %}#}
+          <li class="nav-item {% if 'tables-proveedores' in segment %} active {% endif %}">
+
 
             <a class="nav-link listaSidebar" type="button" id="dropdownProvee" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <i class="material-icons">contact_phone</i>Proveedores
@@ -37,7 +38,7 @@
             </a>
 
           </li>
-          <!-- % endif % -->
+{#          {% endif %}#}
           <li class="nav-item {% if 'tables-compras' in segment %} active {% endif %}">
 
             <a class="nav-link listaSidebar" type="button" id="dropdownCompras" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

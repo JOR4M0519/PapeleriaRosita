@@ -7,6 +7,7 @@ from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from mysite.settings import DATABASES 
 from .models import Producto, Proveedor, DetallesVenta, DetallesCompra, Usuario, AuthUser
+from .models import Producto, Proveedor, DetallesVenta, DetallesCompra, AuthUser
 from .forms import login, signup
 
 
@@ -128,7 +129,7 @@ class ProveedorView(View):
         return JsonResponse(datos)
 
     def put(request, id):
-        jd = json.loads(request.body)
+        jd = request
         providers = list(Proveedor.objects.filter(id_proveedor=id).values())
         if len(providers) > 0:
             provider = Proveedor.objects.get(id_proveedor=id)
@@ -160,7 +161,7 @@ class UsuarioView(View):
 
     def get(self, request, id=0):
         if (id > 0):
-            user = list(AuthUser.objects.filter(id_usuario=id).values())
+            user = list(AuthUser.objects.filter(id=id).values())
             if len(user) > 0:
                 datos = {'message': "Success", 'user': user[0]}
             else:
@@ -174,19 +175,8 @@ class UsuarioView(View):
 
         return JsonResponse(datos)
 
-    def post(request):
-        jd = json.loads(request.body)
-        AuthUser.objects.create(username=jd['username'],
-                               nombre=jd['nombre'],
-                               telefono=jd['telefono'],
-                               num_identificacion=jd['num_identificacion'],
-                               clave=jd['clave'],
-                               rol=jd['rol'],
-                               estado=jd['estado'])
-        datos = {'message': "Success"}
-        return JsonResponse(datos)
+    def put(self, request, id):
 
-    def put(request, id):
         jd = json.loads(request.body)
         details = list(AuthUser.objects.filter(id_usuario=id).values())
         if len(details) > 0:
@@ -228,7 +218,7 @@ class DetalleCompraView(View):
                                              port="5432",
                                              database=DATABASES['default']['NAME'])
             cursor = ps_connection.cursor()
-            if request['id_proveedor'] == 0:
+            if request['id_proveedor'] == '':
                 cursor.callproc('fn_reportecompra', [request['fecha_inicio'],request['fecha_final']])
             else:
                 cursor.callproc('fn_reportecompraproveedor', [request['id_proveedor'],request['fecha_inicio'],request['fecha_final']])
@@ -289,7 +279,7 @@ class DetalleVentaView(View):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
-    def get(self, request, id=0):
+    def get(self, request):
         try:
             ps_connection = psycopg2.connect(user="postgres",
                                              password=DATABASES['default']['PASSWORD'],
@@ -297,10 +287,10 @@ class DetalleVentaView(View):
                                              port="5432",
                                              database=DATABASES['default']['NAME'])
             cursor = ps_connection.cursor()
-            if request['id_producto'] == 0:
+            if request['id_producto'] == '':
                 cursor.callproc('fn_reporteventa', [request['fecha_inicio'], request['fecha_final']])
             else:
-                cursor.callproc('fn_reporteventaproducto', [request['id_proveedor'], request['fecha_inicio'], request['fecha_final']])
+                cursor.callproc('fn_reporteventaproducto', [request['id_producto'], request['fecha_inicio'], request['fecha_final']])
             result = cursor.fetchone()
             if result[0] is not None:
                 datos = {'message': 'Success', 'details': result[0]}
