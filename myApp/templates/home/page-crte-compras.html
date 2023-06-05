@@ -30,15 +30,15 @@
                       <div class="col-md-6">
                         <div class="form-group">
                           <label class="bmd-label-floating">Proveedor</label>
-                          <input required type="text" name="razon_social" class="form-control" data-toggle="modal" value="{{detCompra.detail.email_proveedor}}" data-target="#myModal" readonly>
-                          <input hidden required id="id_proveedor" name="id_proveedor" value="">
+                          <input required type="text" name="razon_social" class="form-control" data-toggle="modal" value="{{proveedor.provider.razon_social}}" data-target="#myModal" readonly>
+                          <input hidden required id="id_proveedor" name="id_proveedor" value="{{detcompra.detail.id_proveedor_id}}">
                         </div>
                       </div>
                       <div class="col-md-6">
                         <div class="form-group">
                           <label class="bmd-label-floating">Producto</label>
-                          <input required type="text" name="nombre_producto" class="form-control" data-toggle="modal" data-target="#myModal" readonly>
-                          <input hidden required id="id_producto" name="id_producto" value="">
+                          <input required type="text" name="nombre_producto" class="form-control"  value="{{producto.product.nombre_producto}}" data-toggle="modal" data-target="#myModal" readonly>
+                          <input hidden required id="id_producto" name="id_producto" value="{{detcompra.detail.id_producto_id}}">
                         </div>
                       </div>
 
@@ -47,16 +47,22 @@
                       <div class="col-md-6">
                         <div class="form-group">
                           <label class="bmd-label-floating">Cantidad</label>
-                          <input required type="number" name="cantidad" class="form-control">
+                          <input required type="number" name="cantidad" value="{{detcompra.detail.cantidad}}" class="form-control">
                         </div>
                       </div>
                       <div class="col-md-6">
                         <div class="form-group">
-                          <input required type="date" name="fecha" class="form-control" style="color: lightslategray">
+                          <input required type="date" name="fecha" class="form-control" value="{{detcompra.detail.fecha}}" style="color: lightslategray">
                         </div>
                       </div>
                     </div>
+                    {% if action == "GET" %}
                     <button type="submit" class="btn btn-primary pull-right">Registrar Compra</button>
+                    {% else %}
+                    <input hidden type="text" name="id_detcompra" value="{{detcompra.detail.id_detcompra}}">
+                    <button type="submit" name="page_detcompra_edit_button" value="" class="btn btn-primary pull-right">Editar Compra</button>
+                    {% endif %}
+                    
                     <div class="clearfix"></div>
                   </form>
                 </div>
