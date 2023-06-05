@@ -61,6 +61,15 @@ def pages(request):
                 return HttpResponse(html_template.render(context,request))
 
             #Proveedores
+            elif load_template == 'tables-proveedores.html':
+                context['titulo_tabla'] = 'Proveedor'
+                context['subtitulo_tabla'] = 'Lista detallada de los proveedores existentes en el sistema'
+                #Lista de JSON Ras - Mantener nombres de claves para que se haga la lista en el HTLM
+                context['columnas'] = ['Razón social','Email','Teléfono','Estado']
+                context['lista'] = json.loads(views.ProveedorView().get(request).content)['provider']
+                return HttpResponse(html_template.render(context,request))
+
+
             elif load_template == 'page-crte-proveedores.html':
                 context['encabezado'] = 'Agregar Proveedor'
                 return HttpResponse(html_template.render(context,request))
@@ -89,7 +98,6 @@ def pages(request):
 
                 #Lista de JSON Ras - Mantener nombres de claves para que se haga la lista en el HTLM
                 context['lista'] = json.loads(views.DetalleCompraView().get(filtros).content)
-                print(context['lista'])
                 return HttpResponse(html_template.render(context,request))
 
             #ventas
@@ -103,6 +111,21 @@ def pages(request):
                 #Lista de JSON Ras - Mantener nombres de claves para que se haga la lista en el HTLM
                 context['columnas'] = ['Nombre del producto','Valor compra','Valor venta','Valor ganancia','Cantidad comprada','Estado']
                 context['lista'] = json.loads(views.ProductoView().get(request).content)['products']
+                return HttpResponse(html_template.render(context,request))
+
+            elif load_template == 'tables-ventas.html':
+                context['titulo_tabla'] = 'Ventas'
+                context['subtitulo_tabla'] = 'Lista detallada de ventas realizadas'
+                #Lista de JSON Ras - Mantener nombres de claves para que se haga la lista en el HTLM
+                context['columnas'] = ['Nombre del producto','Cantidad vendida','Fecha']
+
+                context['columnas_popu_provee'] = ['Razón social','Teléfono']
+                
+                context['lista_popu_provee'] = json.loads(views.ProveedorView().get(request).content)['provider']
+
+
+                #Lista de JSON Ras - Mantener nombres de claves para que se haga la lista en el HTLM
+                context['lista'] = [{'id_detventa':5,'nombre_producto': 'Peras','cantidad':100,'fecha':'3/6/2030'},{'id_detventa':10,'nombre_producto': 'piojos','cantidad':10000,'fecha':'3/6/2030'}]
                 return HttpResponse(html_template.render(context,request))
 
             return HttpResponse(html_template.render(context, request))
@@ -157,11 +180,41 @@ def pages(request):
                                 'valor_ganancia': 0,
                                 'stock': 0,
                                 'estado': 'A'}
+
                 
                     message = json.loads(views.ProductoView.post(producto).content)
                     context['result'] = message['message']
                     context['encabezado'] = 'Agregar producto'
                     return HttpResponse(html_template.render(context, request))
+
+            #Proveedores
+            elif load_template == 'page-crte-proveedores.html':
+                if request.POST.get('id_proveedor')==None:
+                    proveedor={'razon_social': request.POST['razon_social'],
+                            'email_proveedor': request.POST['email_proveedor'],
+                            'telefono': request.POST['telefono'],
+                            'estado': 'A'}
+                    message = json.loads(views.ProveedorView.post(proveedor).content)
+                    context['result'] = message['message']
+                    context['encabezado'] = 'Agregar Proveedor'
+                    return HttpResponse(html_template.render(context, request))  
+                
+                else:
+                    id_proveedor = request.POST.get('id_proveedor')
+                
+                return HttpResponse(html_template.render(context, request))  
+
+            elif load_template == 'tables-proveedores.html':
+
+                if request.POST.get('id_eliminar')!=None:
+                    id_eliminar= request.POST.get('id_eliminar')
+                
+                elif request.POST.get('id_editar')!=None:
+                    id_product= request.POST.get('id_editar')
+
+                return redirect(load_template)
+
+            
                 
                 #*************
                 #*Proveedores*
@@ -171,17 +224,46 @@ def pages(request):
                 if request.POST.get('id_proveedor')!=None:
                     id_proveedor = request.POST.get('id_proveedor')
                     return HttpResponse(html_template.render(context, request))
+
+                    context['result'] = ''
+                    context['encabezado'] = 'Editar producto'
+                    context['action'] = 'UPDATE'
+                    context['producto'] = producto
+                    html_template = loader.get_template('home/page-crte-product.html')
+                    return HttpResponse(html_template.render(context,request))
+            
+            elif request.POST.get('page_product_edit_button')!=None:
                 
-                #Crear Proveedor
-                else:
-                    proveedor={ 'razon_social': request.POST['razon_social'],
-                                'email_proveedor': request.POST['email_proveedor'],
-                                'telefono': request.POST['telefono'],
-                                'estado': 'A'}
-                    message = json.loads(views.ProveedorView.post(proveedor).content)
-                    context['result'] = message['message']
-                    context['encabezado'] = 'Agregar Proveedor'
-                    return HttpResponse(html_template.render(context, request))  
+                id_producto = request.POST.get('id_producto')
+                producto={'nombre_producto': request.POST['nombre_producto'],
+                            'valor_compra': request.POST['valor_compra'],
+                            'valor_venta': request.POST['valor_venta'],
+                            'estado': request.POST['estado']}
+                
+                message = json.loads(views.ProductoView.put(producto,id_producto).content)
+                print(message)
+                #??
+                #context['result'] = message['message']
+                return HttpResponse(html_template.render(context, request))
+            
+            elif request.POST.get('boton_filtro')!=None:
+                print('Generar reporte seleccionado')
+            return redirect(load_template)
+
+            #Ventas
+
+            elif load_template == 'tables-ventas.html':
+             
+                if request.POST.get('id_eliminar')!=None:
+                    id_eliminar= request.POST.get('id_eliminar')
+                
+                elif request.POST.get('id_editar')!=None:
+                    id_product= request.POST.get('id_editar')
+                
+            return redirect(load_template) 
+
+          
+          
 
 
                 #*********

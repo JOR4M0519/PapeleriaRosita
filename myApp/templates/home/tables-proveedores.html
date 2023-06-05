@@ -1,0 +1,68 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} UI Tables {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+        <div class="row">
+            <div class="col-md-12">
+              <div class="card">
+                <div class="card-header card-header-primary">
+                  <h4 class="card-title ">{{ titulo_tabla }}</h4>
+                  <p class="card-category"> {{ subtitulo_tabla }}</p>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead class=" text-primary">
+                        {% for y in columnas %}
+                            <th>
+                                {{ y }}
+                            </th>
+                            {% endfor %}
+                      </thead>
+                      <tbody>
+                        <form action="" method="post">
+                        {% csrf_token %}
+                        {% for x in lista %}
+                          <tr>
+                            <td class="text-primary">
+                                {{ x.razon_social }}
+                            </td>
+                            <td>
+                                {{ x.email_proveedor }}
+                            </td>
+                            <td>
+                                {{ x.telefono }}
+                            </td>
+                            <td>
+                              {% if x.estado == "A" %}
+                                Activo
+                              {% else %}
+                                Inactivo
+                              {% endif %}
+                            </td>
+                          <td>
+                            <button type="submit" value="{{ x.id_proveedor }}" name="id_editar" class="btn btn-outline-secondary btn-sm"><i class="material-icons">edit</i></button>
+                          </td>
+                          <td>
+                            <button type="submit" value="{{ x.id_proveedor }}" name="id_eliminar" class="btn btn-outline-danger btn-sm"><i class="material-icons">delete</i></button>
+                          </td>
+                          </tr>
+                        {% endfor %}
+                      </form>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}
