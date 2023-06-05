@@ -129,7 +129,7 @@ class ProveedorView(View):
         return JsonResponse(datos)
 
     def put(request, id):
-        jd = json.loads(request.body)
+        jd = request
         providers = list(Proveedor.objects.filter(id_proveedor=id).values())
         if len(providers) > 0:
             provider = Proveedor.objects.get(id_proveedor=id)
