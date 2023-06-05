@@ -357,6 +357,34 @@ def pages(request):
                     
                     message = json.loads(views.ProductoView.put(producto,id_producto).content)           
                     return HttpResponse(html_template.render(context, request))
+                elif request.POST.get('boton_filtro') != None:
+
+                    if request.POST.get('id_seleccion') != None:
+                        id_seleccion = request.POST.get('id_seleccion')
+                        print(id_seleccion)
+                    else:
+                        print('no')
+
+                    context['titulo_tabla'] = 'Ventas'
+                    context['subtitulo_tabla'] = 'Lista detallada de ventas realizadas'
+                    # Lista de JSON Ras - Mantener nombres de claves para que se haga la lista en el HTLM
+                    context['columnas'] = ['Nombre del producto', 'Cantidad Vendida', 'Fecha']
+
+                    context['columnas_popu_provee'] = ['Razón social', 'Teléfono']
+
+                    context['lista_popu_provee'] = json.loads(views.ProveedorView().get(request).content)['provider']
+
+                    filtros = {
+                        'id_producto': request.POST['razon_social'],
+                        'fecha_inicio': request.POST['fecha_inicio'],
+                        'fecha_final': request.POST['fecha_final']
+                    }
+
+                    context['label_filtro'] = 'proveedores'
+
+                    # Lista de JSON Ras - Mantener nombres de claves para que se haga la lista en el HTLM
+                    context['lista'] = json.loads(views.ReporteVentaView().get(filtros).content)
+                    return HttpResponse(html_template.render(context, request))
 
             #ELIMINAR PROBABLMENTE
             elif request.POST.get('page_product_edit_button')!=None:
@@ -389,7 +417,7 @@ def pages(request):
                 context['columnas_popu_provee'] = ['Razón social', 'Teléfono']
 
                 context['lista_popu_provee'] = json.loads(views.ProveedorView().get(request).content)['provider']
-                print(request)
+
                 filtros = {
                     'id_producto': request.POST['razon_social'],
                     'fecha_inicio': request.POST['fecha_inicio'],
