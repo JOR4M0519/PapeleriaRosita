@@ -35,7 +35,7 @@
                       </div>
                       <div class="col-md-4">
                         <div class="form-group">
-                          
+
                           <label class="bmd-label-floating">Email</label>
                           <input type="text" value="{{proveedor.provider.email_proveedor}}" name="email_proveedor" class="form-control">
                         </div>
@@ -43,14 +43,37 @@
 
                     </div>
                     <div class="row">
+
+                      {% if action == "UPDATE" %}
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">Estado</label>
+                          <select class="form-select" name="estado" aria-label="Default select example">
+                            {% if proveedor.provider.estado == "A" %}
+                            <option value="{{proveedor.provider.estado}}" selected>Activo</option>
+                            <option value="I">Inactivo</option>
+                            {% else %}
+                            <option value="{{proveedor.provider.estado}}" selected>Inactivo</option>
+                            <option value="A">Activo</option>
+                            {% endif %}
+                          </select>
+                        </div>
+                      </div>
+                      {% endif %}
+
                       <div class="col-md-4">
                         <div class="form-group">
                           <label class="bmd-label-floating">Teléfono</label>
-                          <input type="text" value="{{proveedor.provider.razon_social}}" name="telefono" class="form-control">
+                          <input type="text" value="{{proveedor.provider.telefono}}" name="telefono" class="form-control">
                         </div>
                       </div>
                     </div>
+                    {% if action == "GET" %}
                     <button type="submit" class="btn btn-primary pull-right">Crear Proveedor</button>
+                    {% else %}
+                    <input hidden type="text" name="id_proveedor" value="{{proveedor.provider.id_proveedor}}">
+                    <button type="submit" name="page_proveedor_edit_button" value="" class="btn btn-primary pull-right">Editar Proveedor</button>
+                    {% endif %}
                     <div class="clearfix"></div>
                   </form>
                 </div>

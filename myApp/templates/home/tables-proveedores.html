@@ -4,7 +4,15 @@
 
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}{% endblock stylesheets %}
-
+<script>  
+  let alerta = "{{result}}"
+  print(alerta)
+  if(alerta == "Success"){
+    swal("Éxitoso", "El producto se ha creado", "success");
+  }else if (alerta == "Error"){
+    swal("Error", "Error guardando datos", "error");
+  }
+</script>
 {% block content %}
 
         <div class="row">
