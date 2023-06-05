@@ -262,24 +262,34 @@ def pages(request):
                 elif request.POST.get('id_editar')!=None:
                     
                     id_detCompra= request.POST.get('id_editar')
-                    det_compra = json.loads(views.ReporteCompraView.get(views,request,id=int(id_detCompra)).content)
+                    detcompra = json.loads(views.DetalleCompraView.get(views,request,id=int(id_detCompra)).content)
+                    
+
+                    proveedor = json.loads(views.ProveedorView.get(views,request,id=int(detcompra['detail']['id_proveedor_id'])).content)
+                    producto = json.loads(views.ProductoView.get(views,request,id=int(detcompra['detail']['id_producto_id'])).content)
+
+                    #print(producto['nombre_producto'],proveedor['razon_social'])
+
+                    print(proveedor)
                     
                     context['result'] = ''
                     context['encabezado'] = 'Correción compra'
                     context['action'] = 'UPDATE'
-                    context['det_compra'] = det_compra
+                    context['detcompra'] = detcompra
+                    context['producto'] = producto
+                    context['proveedor'] = proveedor
                     html_template = loader.get_template('home/page-crte-compras.html')
                     return HttpResponse(html_template.render(context,request))
                 #Redirección para editar
-                elif request.POST.get('page_compras_edit_button')!=None:
+                elif request.POST.get('page_detcompra_edit_button')!=None:
                     
-                    id_producto = request.POST.get('id_detcompra')
-                    producto={'id_producto': request.POST['id_producto'],
+                    id_detcompra = request.POST.get('id_detcompra')
+                    detcompra={ 'id_producto': request.POST['id_producto'],
                                 'id_proveedor': request.POST['id_proveedor'],
                                 'cantidad': request.POST['cantidad'],
                                 'fecha': request.POST['fecha']}
                     
-                    message = json.loads(views.ProductoView.put(producto,id_producto).content)           
+                    message = json.loads(views.DetalleCompraView.put(detcompra,id_detcompra).content)           
                     return HttpResponse(html_template.render(context, request))
                 #filtro
                 elif request.POST.get('boton_filtro')!=None:
@@ -305,7 +315,6 @@ def pages(request):
                     context['lista'] = json.loads(views.ReporteCompraView().get(filtros).content)
                     return HttpResponse(html_template.render(context, request))
 
-        
 
             #**********
             #**Ventas**
@@ -348,7 +357,6 @@ def pages(request):
                     
                     message = json.loads(views.ProductoView.put(producto,id_producto).content)           
                     return HttpResponse(html_template.render(context, request))
-
 
             #ELIMINAR PROBABLMENTE
             elif request.POST.get('page_product_edit_button')!=None:
