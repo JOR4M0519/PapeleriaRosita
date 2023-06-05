@@ -13,20 +13,11 @@
 
         </div>
         <div style="position: relative; margin-right: 4%; width: 16%;" class="form-group">
-            <input style="width: 100%;" type="text" name="razon_social" class="form-control" data-toggle="modal" data-target="#myModal" placeholder="Selección de un proveedor" readonly>    
+            <input style="width: 100%;" type="text" name="nombre_ingresado" class="form-control" data-toggle="modal" placeholder="Nombre del {{ texto_input }}">
         </div>
-        <button type="submit" class="btn btn-outline-primary btn-sm" name="boton_filtro" value="."><i class="material-icons">book</i>&nbsp;Generar reporte</button>
+        <button type="submit" class="btn btn-outline-primary btn-sm" name="boton_filtro" value="."><i
+                class="material-icons">book</i>&nbsp;Generar reporte</button>
 
-        <div id="myModal" class="modal fade" role="dialog">
-            {% if 'tables-ventas' in segment %} 
-                {% include 'includes/popups-producto.html' %}
-            {% else %}
-                {% include 'includes/popups-proveedor.html' %}
-            {% endif %}
-            
-        </div>
-
-        
 
     </form>
 

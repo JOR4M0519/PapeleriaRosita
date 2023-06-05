@@ -16,10 +16,15 @@ from django.shortcuts import redirect
 @login_required(login_url="/login/")
 def index(request):
     context = {}
-    context ['segment']= 'index'
+    context ['segment']= 'tables-productos'
+    context['titulo_tabla'] = 'Productos'
     context ['rol']= 'administrador'
-    html_template = loader.get_template('home/index.html')
-    return HttpResponse(html_template.render(context, request))
+    context['subtitulo_tabla'] = 'Lista detallada de los productos existentes en el inventario'
+                #Lista de JSON Ras - Mantener nombres de claves para que se haga la lista en el HTLM
+    context['columnas'] = ['Nombre del producto','Nombre del proveedor','Cantidad comprada','Fecha','Inventario','Estado']
+    context['lista'] = json.loads(views.ProductoView().get(request).content)['products']
+    html_template = loader.get_template('home/tables-productos.html')
+    return HttpResponse(html_template.render(context,request))
 
 @login_required(login_url="/login/")
 def pages(request):
@@ -85,10 +90,7 @@ def pages(request):
                 context['subtitulo_tabla'] = 'Lista detallada de compras realizadas'
                 #Lista de JSON Ras - Mantener nombres de claves para que se haga la lista en el HTLM
                 context['columnas'] = ['Nombre del producto','Nombre del proveedor','Cantidad comprada','Fecha']
-
-                context['columnas_popu_provee'] = ['Razón social','Teléfono']
-                
-                context['lista_popu_provee'] = json.loads(views.ProveedorView().get(request).content)['provider']
+                context['texto_input'] = 'proveedor'
 
                 filtros = {
                     'id_proveedor': '',
@@ -121,11 +123,8 @@ def pages(request):
                 #Lista de JSON Ras - Mantener nombres de claves para que se haga la lista en el HTLM
                 context['columnas'] = ['Nombre del producto','Cantidad vendida','Fecha']
 
-                context['columnas_popu_provee'] = ['Razón social','Teléfono']
+                context['texto_input'] = 'producto'
                 
-                context['lista_popu_provee'] = json.loads(views.ProveedorView().get(request).content)['provider']
-
-
                 filtros = {
                     'id_producto': '',
                     'fecha_inicio': '2023-06-01',
@@ -163,10 +162,6 @@ def pages(request):
                     context['producto'] = producto
                     html_template = loader.get_template('home/page-crte-product.html')
                     return HttpResponse(html_template.render(context,request))
-                #filtro
-                elif request.POST.get('boton_filtro')!=None:
-                    print('Generar reporte seleccionado')
-                    return redirect(load_template)
                 #Redirección para editar
                 elif request.POST.get('page_product_edit_button')!=None:
                     
@@ -223,10 +218,7 @@ def pages(request):
                     context['proveedor'] = proveedor
                     html_template = loader.get_template('home/page-crte-proveedores.html')
                     return HttpResponse(html_template.render(context,request))
-                #filtro
-                elif request.POST.get('boton_filtro')!=None:
-                    
-                    return redirect(load_template)
+            
                 #Redirección para editar
                 elif request.POST.get('page_proveedor_edit_button')!=None:
                     context['result'] = 'actualizado'
@@ -257,7 +249,7 @@ def pages(request):
             elif load_template == 'tables-compras.html':
                 #Eliminar
                 if request.POST.get('id_eliminar')!=None:
-                    id_eliminar= request.POST.get('id_eliminar')
+                    views.DetalleCompraView.delete(request,id=request.POST.get('id_eliminar'))
                 #Editar
                 elif request.POST.get('id_editar')!=None:
                     
@@ -290,20 +282,20 @@ def pages(request):
                     message = json.loads(views.DetalleCompraView.put(detcompra,id_detcompra).content)           
                     return redirect(load_template)
                 #filtro
-                elif request.POST.get('boton_filtro')!=None:
+               
+
+                if request.POST.get('boton_filtro')!=None:
                     context['titulo_tabla'] = 'Compras'
                     context['subtitulo_tabla'] = 'Lista detallada de compras realizadas'
                     # Lista de JSON Ras - Mantener nombres de claves para que se haga la lista en el HTLM
                     context['columnas'] = ['Nombre del producto', 'Nombre del proveedor', 'Cantidad comprada', 'Fecha']
 
-                    context['columnas_popu_provee'] = ['Razón social', 'Teléfono']
-
-                    context['lista_popu_provee'] = json.loads(views.ProveedorView().get(request).content)['provider']
+                    context['texto_input'] = 'proveedor'
 
                     filtros = {
-                        'id_proveedor': request.POST['razon_social'],
-                        'fecha_inicio': request.POST['fecha_inicio'],
-                        'fecha_final': request.POST['fecha_final']
+                    'nombre_proveedor': request.POST['nombre_ingresado'],
+                    'fecha_inicio': request.POST['fecha_inicio'],
+                    'fecha_final': request.POST['fecha_final']
                     }
 
 
@@ -312,7 +304,10 @@ def pages(request):
                     # Lista de JSON Ras - Mantener nombres de claves para que se haga la lista en el HTLM
                     context['lista'] = json.loads(views.ReporteCompraView().get(filtros).content)
                     return HttpResponse(html_template.render(context, request))
-
+                     
+                return HttpResponse(html_template.render(context, request))
+                   
+        
 
             #**********
             #**Ventas**
@@ -332,7 +327,7 @@ def pages(request):
             elif load_template == 'tables-ventas.html':
                 #Eliminar
                 if request.POST.get('id_eliminar')!=None:
-                    id_eliminar= request.POST.get('id_eliminar')
+                    views.DetalleVentaView.delete(request,id=request.POST.get('id_eliminar'))
                 #Editar
                 elif request.POST.get('id_editar')!=None:
                     
@@ -361,6 +356,54 @@ def pages(request):
                     return redirect(load_template)
 
                 elif request.POST.get('boton_filtro')!=None:
+                    
+                    message = json.loads(views.ProductoView.put(producto,id_producto).content)           
+                    return HttpResponse(html_template.render(context, request))
+                elif request.POST.get('boton_filtro') != None:
+
+                    if request.POST.get('id_seleccion') != None:
+                        id_seleccion = request.POST.get('id_seleccion')
+                        print(id_seleccion)
+                    else:
+                        print('no')
+
+                    context['titulo_tabla'] = 'Ventas'
+                    context['subtitulo_tabla'] = 'Lista detallada de ventas realizadas'
+                    # Lista de JSON Ras - Mantener nombres de claves para que se haga la lista en el HTLM
+                    context['columnas'] = ['Nombre del producto', 'Cantidad Vendida', 'Fecha']
+
+                    context['columnas_popu_provee'] = ['Razón social', 'Teléfono']
+
+                    context['lista_popu_provee'] = json.loads(views.ProveedorView().get(request).content)['provider']
+
+                    filtros = {
+                        'id_producto': request.POST['razon_social'],
+                        'fecha_inicio': request.POST['fecha_inicio'],
+                        'fecha_final': request.POST['fecha_final']
+                    }
+
+                    context['label_filtro'] = 'proveedores'
+
+                    # Lista de JSON Ras - Mantener nombres de claves para que se haga la lista en el HTLM
+                    context['lista'] = json.loads(views.ReporteVentaView().get(filtros).content)
+                    return HttpResponse(html_template.render(context, request))
+
+            #ELIMINAR PROBABLMENTE
+            elif request.POST.get('page_product_edit_button')!=None:
+                
+                id_producto = request.POST.get('id_producto')
+                producto={'nombre_producto': request.POST['nombre_producto'],
+                            'valor_compra': request.POST['valor_compra'],
+                            'valor_venta': request.POST['valor_venta'],
+                            'estado': request.POST['estado']}
+                
+                message = json.loads(views.ProductoView.put(producto,id_producto).content)
+                print(message)
+                #??
+                #context['result'] = message['message']
+                return HttpResponse(html_template.render(context, request))
+            
+            elif request.POST.get('boton_filtro')!=None:
 
                     if request.POST.get('id_seleccion') != None:
                         id_seleccion = request.POST.get('id_seleccion')
@@ -377,6 +420,34 @@ def pages(request):
 
                     context['lista_popu_provee'] = json.loads(views.ProveedorView().get(request).content)['provider']
                     print(request)
+                    filtros = {
+                        'id_producto': request.POST['razon_social'],
+                        'fecha_inicio': request.POST['fecha_inicio'],
+                        'fecha_final': request.POST['fecha_final']
+                    }
+
+                    context['label_filtro'] = 'proveedores'
+
+                    # Lista de JSON Ras - Mantener nombres de claves para que se haga la lista en el HTLM
+                    context['lista'] = json.loads(views.ReporteVentaView().get(filtros).content)
+                    return HttpResponse(html_template.render(context, request))
+                elif request.POST.get('boton_filtro') != None:
+
+                    if request.POST.get('id_seleccion') != None:
+                        id_seleccion = request.POST.get('id_seleccion')
+                        print(id_seleccion)
+                    else:
+                        print('no')
+
+                    context['titulo_tabla'] = 'Ventas'
+                    context['subtitulo_tabla'] = 'Lista detallada de ventas realizadas'
+                    # Lista de JSON Ras - Mantener nombres de claves para que se haga la lista en el HTLM
+                    context['columnas'] = ['Nombre del producto', 'Cantidad Vendida', 'Fecha']
+
+                    context['columnas_popu_provee'] = ['Razón social', 'Teléfono']
+
+                    context['lista_popu_provee'] = json.loads(views.ProveedorView().get(request).content)['provider']
+
                     filtros = {
                         'id_producto': request.POST['razon_social'],
                         'fecha_inicio': request.POST['fecha_inicio'],
