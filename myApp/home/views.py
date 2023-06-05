@@ -304,7 +304,7 @@ def pages(request):
                     # Lista de JSON Ras - Mantener nombres de claves para que se haga la lista en el HTLM
                     context['lista'] = json.loads(views.ReporteCompraView().get(filtros).content)
                     return HttpResponse(html_template.render(context, request))
-        
+
 
             #**********
             #**Ventas**
