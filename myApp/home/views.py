@@ -199,7 +199,7 @@ def pages(request):
                 elif request.POST.get('id_editar')!=None:
                     
                     id_product= request.POST.get('id_editar')
-                    producto = json.loads(views.ProductoView.get(int(id_product)).content)
+                    producto = json.loads(views.DetalleCompraView.get(int(id_product)).content)
                     
                     context['result'] = ''
                     context['encabezado'] = 'Editar producto'
