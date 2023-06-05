@@ -199,6 +199,39 @@ def pages(request):
                 context['result'] = message['message']
                 context['encabezado'] = 'Agregar Proveedor'
                 return HttpResponse(html_template.render(context, request))  
+            
+            if load_template == 'tables-proveedores.html':
+                #Eliminar
+                if request.POST.get('id_eliminar')!=None:
+                    id_eliminar= request.POST.get('id_eliminar')
+                    return redirect(load_template)
+                #Editar
+                elif request.POST.get('id_editar')!=None:
+                    
+                    id_proveedor= request.POST.get('id_editar')
+                    proveedor = json.loads(views.ProveedorView.get(views,request,id=int(id_proveedor)).content)
+                    
+                    context['result'] = ''
+                    context['encabezado'] = 'Editar Proveedor'
+                    context['action'] = 'UPDATE'
+                    context['proveedor'] = proveedor
+                    html_template = loader.get_template('home/page-crte-proveedores.html')
+                    return HttpResponse(html_template.render(context,request))
+                #filtro
+                elif request.POST.get('boton_filtro')!=None:
+                    
+                    return redirect(load_template)
+                #Redirección para editar
+                elif request.POST.get('page_proveedor_edit_button')!=None:
+                    
+                    id_proveedor = request.POST.get('id_proveedor')
+                    proveedor={'razon_social': request.POST['razon_social'],
+                                'email_proveedor': request.POST['email_proveedor'],
+                                'telefono': request.POST['telefono'],
+                                'estado': request.POST['estado']}
+                    message = json.loads(views.ProveedorView.put(proveedor,id_proveedor).content)           
+                    return redirect(load_template)
+
 
                 #*********
                 #*Compras*
