@@ -11,7 +11,7 @@
         <ul class="nav">
         {% if request.user.is_authenticated %}
 
-          <li class="nav-item {% if 'page-product' in segment %} active {% endif %}">
+          <li class="nav-item {% if 'tables-productos' in segment %} active {% endif %}">
 
             <a class="nav-link listaSidebar" type="button" id="dropdownProductos" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <i class="material-icons">color_lens</i>Productos
@@ -24,13 +24,13 @@
 
           </li>
           {% if 'administrador' in rol %}
-          <li class="nav-item {% if 'page-user' in segment %} active {% endif %}">
+          <li class="nav-item {% if 'tables-proveedores' in segment %} active {% endif %}">
 
             <a class="nav-link listaSidebar" type="button" id="dropdownProvee" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <i class="material-icons">contact_phone</i>Proveedores
             </a>
             <div class="nav-link dropdown-menu" aria-labelledby="dropdownProvee">
-             <a class="nav-link dropdown-item listaSidebar" href="/ui-tables.html">Lista de proveedores</a>
+             <a class="nav-link dropdown-item listaSidebar" href="/tables-proveedores.html">Lista de proveedores</a>
              <a class="nav-link dropdown-item listaSidebar" href="/page-crte-proveedores.html">Agregar proveedores</a>
             </div>
             </a>
@@ -49,13 +49,13 @@
             </a>
 
           </li>
-          <li class="nav-item {% if 'ui-typography' in segment %} active {% endif %}">
+          <li class="nav-item {% if 'tables-ventas' in segment %} active {% endif %}">
 
             <a class="nav-link listaSidebar" type="button" id="dropdownVentas" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <i class="material-icons">attach_money</i>Ventas
             </a>
             <div class="nav-link dropdown-menu" aria-labelledby="dropdownVentas">
-             <a class="nav-link dropdown-item listaSidebar" href="/ui-tables.html">Lista de ventas</a>
+             <a class="nav-link dropdown-item listaSidebar" href="/tables-ventas.html">Lista de ventas</a>
              <a class="nav-link dropdown-item listaSidebar" href="/page-crte-ventas.html">Agregar ventas</a>
             </div>
             </a>
