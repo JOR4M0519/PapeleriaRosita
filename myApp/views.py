@@ -369,6 +369,7 @@ class ReporteCompraView(View):
                 cursor.callproc('fn_reportecompraproveedor',
                                 [request['id_proveedor'], request['fecha_inicio'], request['fecha_final']])
             result = cursor.fetchone()
+            print(result)
             if result[0] is not None:
                 datos = {'message': 'Success', 'details': result[0]}
             else:

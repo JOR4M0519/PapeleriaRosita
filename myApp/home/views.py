@@ -293,7 +293,7 @@ def pages(request):
                     context['texto_input'] = 'proveedor'
 
                     filtros = {
-                    'nombre_proveedor': request.POST['nombre_ingresado'],
+                    'id_proveedor': request.POST['nombre_ingresado'],
                     'fecha_inicio': request.POST['fecha_inicio'],
                     'fecha_final': request.POST['fecha_final']
                     }
@@ -355,10 +355,6 @@ def pages(request):
                     message = json.loads(views.DetalleVentaView.put(producto,id_producto).content)           
                     return redirect(load_template)
 
-                elif request.POST.get('boton_filtro')!=None:
-                    
-                    message = json.loads(views.ProductoView.put(producto,id_producto).content)           
-                    return HttpResponse(html_template.render(context, request))
                 elif request.POST.get('boton_filtro') != None:
 
                     if request.POST.get('id_seleccion') != None:
@@ -377,7 +373,7 @@ def pages(request):
                     context['lista_popu_provee'] = json.loads(views.ProveedorView().get(request).content)['provider']
 
                     filtros = {
-                        'id_producto': request.POST['razon_social'],
+                        'id_producto': request.POST['nombre_ingresado'],
                         'fecha_inicio': request.POST['fecha_inicio'],
                         'fecha_final': request.POST['fecha_final']
                     }
@@ -388,92 +384,6 @@ def pages(request):
                     context['lista'] = json.loads(views.ReporteVentaView().get(filtros).content)
                     return HttpResponse(html_template.render(context, request))
 
-            #ELIMINAR PROBABLMENTE
-            elif request.POST.get('page_product_edit_button')!=None:
-                
-                id_producto = request.POST.get('id_producto')
-                producto={'nombre_producto': request.POST['nombre_producto'],
-                            'valor_compra': request.POST['valor_compra'],
-                            'valor_venta': request.POST['valor_venta'],
-                            'estado': request.POST['estado']}
-                
-                message = json.loads(views.ProductoView.put(producto,id_producto).content)
-                print(message)
-                #??
-                #context['result'] = message['message']
-                return HttpResponse(html_template.render(context, request))
-            
-            elif request.POST.get('boton_filtro')!=None:
-
-                    if request.POST.get('id_seleccion') != None:
-                        id_seleccion = request.POST.get('id_seleccion')
-                        print(id_seleccion)
-                    else:
-                        print('no')
-
-                    context['titulo_tabla'] = 'Ventas'
-                    context['subtitulo_tabla'] = 'Lista detallada de ventas realizadas'
-                    # Lista de JSON Ras - Mantener nombres de claves para que se haga la lista en el HTLM
-                    context['columnas'] = ['Nombre del producto', 'Cantidad Vendida', 'Fecha']
-
-                    context['columnas_popu_provee'] = ['Razón social', 'Teléfono']
-
-                    context['lista_popu_provee'] = json.loads(views.ProveedorView().get(request).content)['provider']
-                    print(request)
-                    filtros = {
-                        'id_producto': request.POST['razon_social'],
-                        'fecha_inicio': request.POST['fecha_inicio'],
-                        'fecha_final': request.POST['fecha_final']
-                    }
-
-                    context['label_filtro'] = 'proveedores'
-
-                    # Lista de JSON Ras - Mantener nombres de claves para que se haga la lista en el HTLM
-                    context['lista'] = json.loads(views.ReporteVentaView().get(filtros).content)
-                    return HttpResponse(html_template.render(context, request))
-                elif request.POST.get('boton_filtro') != None:
-
-                    if request.POST.get('id_seleccion') != None:
-                        id_seleccion = request.POST.get('id_seleccion')
-                        print(id_seleccion)
-                    else:
-                        print('no')
-
-                    context['titulo_tabla'] = 'Ventas'
-                    context['subtitulo_tabla'] = 'Lista detallada de ventas realizadas'
-                    # Lista de JSON Ras - Mantener nombres de claves para que se haga la lista en el HTLM
-                    context['columnas'] = ['Nombre del producto', 'Cantidad Vendida', 'Fecha']
-
-                    context['columnas_popu_provee'] = ['Razón social', 'Teléfono']
-
-                    context['lista_popu_provee'] = json.loads(views.ProveedorView().get(request).content)['provider']
-
-                    filtros = {
-                        'id_producto': request.POST['razon_social'],
-                        'fecha_inicio': request.POST['fecha_inicio'],
-                        'fecha_final': request.POST['fecha_final']
-                    }
-
-                    context['label_filtro'] = 'proveedores'
-
-                    # Lista de JSON Ras - Mantener nombres de claves para que se haga la lista en el HTLM
-                    context['lista'] = json.loads(views.ReporteVentaView().get(filtros).content)
-                    return HttpResponse(html_template.render(context, request))
-
-            #ELIMINAR PROBABLMENTE
-            elif request.POST.get('page_product_edit_button')!=None:
-                
-                id_producto = request.POST.get('id_producto')
-                producto={'nombre_producto': request.POST['nombre_producto'],
-                            'valor_compra': request.POST['valor_compra'],
-                            'valor_venta': request.POST['valor_venta'],
-                            'estado': request.POST['estado']}
-                
-                message = json.loads(views.ProductoView.put(producto,id_producto).content)
-                print(message)
-                #??
-                #context['result'] = message['message']
-                return HttpResponse(html_template.render(context, request))
             
             return redirect(load_template,)
 

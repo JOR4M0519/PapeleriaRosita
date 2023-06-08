@@ -32,9 +32,9 @@
                     <div class="row">
                       <div class="col-md-12">
                         <div class="form-group">
-                          <label class="bmd-label-floating">Nombre del Producto</label>
-                          <input required type="text" value="{{producto.product.nombre_producto}}" name="nombre_producto" class="form-control" data-toggle="modal" data-target="#myModal" readonly>
-                          <input hidden required type="number" name="id_producto" value="{{detventa.detail.id_producto_id}}" class="form-control">
+                          <label class="bmd-label-floating">ID del producto</label>
+                          <input hidden required htype="text" value="{{producto.product.nombre_producto}}" name="nombre_producto" class="form-control" data-toggle="modal" data-target="#myModal">
+                          <input required htype="text" value="{{detventa.detail.id_producto_id}}" name="id_producto" class="form-control" data-toggle="modal" data-target="#myModal">
                         </div>
                       </div>
                     </div>
@@ -60,60 +60,6 @@
                 </div>
               </div>
             </div>
-            <!-- Modal -->
-            <div id="myModal" class="modal fade" role="dialog">
-              <div class="modal-dialog modal-lg">
-
-                <!-- Modal content-->
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h4 class="modal-title">Productos Disponibles</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                  </div>
-                  <div class="modal-body">
-                    <div class="card-body">
-                      <div class="table-responsive">
-                        <table class="table">
-                          <thead class=" text-primary">
-                            <th>
-                              Nombre del proveedor
-                            </th>
-                            <th>
-                              Email
-                            </th>
-                            <th>
-                              Telefono
-                            </th>
-                          </thead>
-                          <tbody>
-                          <form action="" method="post">
-                            
-                            <tr>
-                              <td class="text-primary">
-                                Kevin Garcia SAS
-                              </td>
-                              <td>
-                                KSGARCIAP@UNBOSQUE.EDU.CO
-                              </td>
-                              <td>
-                                3203421774
-                              </td>
-                            </tr>
-                          </form>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary pull-right" data-dismiss="modal">Cerrar</button>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-            <!-- include profile.hmtl -->
-          </div>
 
 {% endblock content %}
 
