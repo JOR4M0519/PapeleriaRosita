@@ -143,7 +143,7 @@ class ProveedorView(View):
             datos = {'message': "Proveedor no Encontrado"}
         return JsonResponse(datos)
 
-    def delete(self, request, id):
+    def delete(request, id):
         providers = list(Proveedor.objects.filter(id_proveedor=id).values())
         if len(providers) > 0:
             Proveedor.objects.filter(id_proveedor=id).delete()
@@ -384,4 +384,18 @@ class ReporteCompraView(View):
                 cursor.close()
                 ps_connection.close()
 
+        return JsonResponse(datos)
+
+class NotificationView(View):
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request):
+        products = list(Producto.objects.filter(stock__lte=10).values())
+        count = Producto.objects.filter(stock__lte=10).count()
+        datos = {'products': products,
+                 'count': count}
+        print(datos)
         return JsonResponse(datos)
