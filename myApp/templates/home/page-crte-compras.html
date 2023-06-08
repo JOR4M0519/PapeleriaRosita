@@ -29,16 +29,16 @@
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label class="bmd-label-floating">Proveedor</label>
-                          <input required type="text" name="razon_social" class="form-control" data-toggle="modal" value="{{proveedor.provider.razon_social}}" data-target="#myModal" readonly>
-                          <input hidden required id="id_proveedor" name="id_proveedor" value="{{detcompra.detail.id_proveedor_id}}">
+                          <label class="bmd-label-floating">ID Proveedor</label>
+                          <input hidden type="text" name="razon_social" class="form-control" data-toggle="modal" value="{{proveedor.provider.razon_social}}" data-target="#myModal" readonly>
+                          <input required type="text" name="id_proveedor" class="form-control" data-toggle="modal" value="{{detcompra.detail.id_proveedor_id}}" data-target="#myModal" >
                         </div>
                       </div>
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label class="bmd-label-floating">Producto</label>
-                          <input required type="text" name="nombre_producto" class="form-control"  value="{{producto.product.nombre_producto}}" data-toggle="modal" data-target="#myModal" readonly>
-                          <input hidden required id="id_producto" name="id_producto" value="{{detcompra.detail.id_producto_id}}">
+                          <label class="bmd-label-floating">ID Producto</label>
+                          <input hidden  type="text" name="nombre_producto" class="form-control"  value="{{producto.product.nombre_producto}}" data-toggle="modal" data-target="#myModal" readonly>
+                          <input required type="text" name="id_producto" class="form-control"  value="{{detcompra.detail.id_producto_id}}" data-toggle="modal" data-target="#myModal" >
                         </div>
                       </div>
 
@@ -68,59 +68,7 @@
                 </div>
               </div>
             </div>
-            <!-- Modal -->
-            <div id="myModal" class="modal fade" role="dialog">
-              <div class="modal-dialog modal-lg">
-
-                <!-- Modal content-->
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h4 class="modal-title">Proveedores Disponibles</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                  </div>
-                  <div class="modal-body">
-                    <div class="card-body">
-                      <div class="table-responsive">
-                        <table class="table">
-                          <thead class=" text-primary">
-                            <th>
-                              Nombre del proveedor
-                            </th>
-                            <th>
-                              Email
-                            </th>
-                            <th>
-                              Telefono
-                            </th>
-                          </thead>
-                          <tbody>
-                          <form action="" method="post">
-                            
-                            <tr>
-                              <td class="text-primary">
-                                Kevin Garcia SAS
-                              </td>
-                              <td>
-                                KSGARCIAP@UNBOSQUE.EDU.CO
-                              </td>
-                              <td>
-                                3203421774
-                              </td>
-                            </tr>
-                          </form>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary pull-right" data-dismiss="modal">Cerrar</button>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-            <!-- include profile.hmtl -->
+            
           </div>
 
           {% with message="null" %} 
