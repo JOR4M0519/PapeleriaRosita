@@ -44,7 +44,8 @@ def pages(request):
             context['action'] = 'GET'
             context['result'] = ''
             context['segment'] = load_template
-            context ['rol']= 'administrador'
+            context['rol'] = 'administrador'
+            context['lista_notificaciones'] = json.loads(views.NotificationView().get(request).content)
             html_template = loader.get_template('home/' + load_template)
 
             if load_template == 'page-user.html':
@@ -140,6 +141,7 @@ def pages(request):
         #POST
         else:
 
+            context['lista_notificaciones'] = json.loads(views.NotificationView().get(request).content)
             html_template = loader.get_template('home/' + load_template)
 
                 #***********
@@ -148,8 +150,7 @@ def pages(request):
             if load_template == 'tables-productos.html':
                 #Eliminar
                 if request.POST.get('id_eliminar')!=None:
-                    id_eliminar= request.POST.get('id_eliminar')
-                    return redirect(load_template)
+                    views.ProductoView.delete(request,id=request.POST.get('id_eliminar'))
                 #Editar
                 elif request.POST.get('id_editar')!=None:
                     
@@ -204,8 +205,7 @@ def pages(request):
             if load_template == 'tables-proveedores.html':
                 #Eliminar
                 if request.POST.get('id_eliminar')!=None:
-                    id_eliminar= request.POST.get('id_eliminar')
-                    return redirect(load_template)
+                    views.ProveedorView.delete(request, id=request.POST.get('id_eliminar'))
                 #Editar
                 elif request.POST.get('id_editar')!=None:
                     
@@ -241,7 +241,7 @@ def pages(request):
                             'id_producto': request.POST['id_producto'],
                             'id_proveedor': request.POST['id_proveedor']}
                 
-                message = json.loads(views.ReporteCompraView.post(compra).content)
+                message = json.loads(views.DetalleCompraView.post(compra).content)
                 context['result'] = message['message']
                 context['encabezado'] = 'Registrar Compra'
                 return HttpResponse(html_template.render(context, request))
